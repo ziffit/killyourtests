@@ -46,6 +46,8 @@ Bei Verstößen FRAGT DER AGENT AKTIV NACH und macht ggf. Verbesserungsvorschlä
 
 Die Spec-Review ist **blockierend**: Ohne eine klare, präzise Spec wird kein Test generiert.
 
+**Vor dem Review** MUSS `learnings.md` konsultiert werden, um bekannte Patterns und Fallstricke zu berücksichtigen (z.B. Checkout-Button-Namen, Snackbar-Handling, bekannte Accessibility-Limitationen).
+
 ## Test-Erstellung
 
 Tests werden auf Basis der geprüften und freigegebenen Spezifikationen im Ordner `specs/` geschrieben.
@@ -68,10 +70,10 @@ Jede Spec MUSS als Tag entweder `desktop` (Default-Viewport 1280×720) oder `mob
   - Jede Assertion braucht einen eindeutigen Selektor
   - Die KI leitet aus der präzisen Beschreibung in der Spec den passenden Selektor ab
 - **Selektoren nach Bestimmtheit priorisieren**:
-  1. `data-testid` / `data-test` (wenn vorhanden)
-  2. `aria-label` / `role`
-  3. `id` / `#id`
-  4. Eindeutige Textkombination via `:has-text()` / `filter()`
+  1. `page.getByRole()` / `page.getByTestId()` (wenn vorhanden)
+  2. `page.getByLabel()` / `page.getByPlaceholder()`
+  3. `page.getByText()` / `page.locator(':has-text()')` / `filter()`
+  4. `id` / `#id` (nur bei stabilen IDs, nicht bei Angular-Auto-IDs wie `mat-input-0`)
   5. Semantische Selektoren (`button`, `input`, `mat-row` + Kontext)
 
 ## Prozess zur Beseitigung von Test-Fehlern (STRIKT)

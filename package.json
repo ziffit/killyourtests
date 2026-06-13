@@ -1,11 +1,11 @@
 {
   "name": "markupplayright",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "KI-gestütztes E2E-Testing: Tests werden als Markdown-Spezifikationen beschrieben und von einer KI in Playwright-Code übersetzt.",
   "scripts": {
     "test": "playwright test",
-    "test:ui": "playwright test --ui"
+    "test:ui": "playwright test --ui",
+    "test:demo": "SLOW_MO=800 playwright test --headed"
   },
   "keywords": [],
   "author": "Felix Tensing, felix-spricht.de",
@@ -14,6 +14,5 @@
   "devDependencies": {
     "@playwright/test": "^1.60.0",
     "@types/node": "^25.9.3"
-  },
-  "dependencies": {}
+  }
 }

@@ -28,7 +28,8 @@ Die "Continue"-Buttons heißen pro Seite unterschiedlich:
 
 ## Search & Basket
 
-- Such-Input: `input[placeholder="Search…"], input.mat-input-element`
+- Such-Input auf der Startseite: `input#mat-input-0` hat **kein placeholder-Attribut** → `page.getByRole('textbox')` nutzen (einzige Textbox auf der Seite)
+- Cookie-Banner erscheint nicht auf `/` (Startseite) → `.catch(() => {})` für den dismiss-Klick verwenden
 - Nach jedem Suchdurchlauf muss der Search-Input mit `.mat-search_icon-close` geschlossen werden
 - Bei mehrfachem Hinzufügen (`addProduct`-Schleife) nach jedem Klick `waitForTimeout(500)` und dann den Snackbar-Notification-Hinweis per `.mat-simple-snackbar-action button` (Text: "X") schließen (`waitForTimeout(200)`)
 - Basket-Zeile: `mat-row:has-text("Produktname")`
@@ -48,7 +49,10 @@ Die "Continue"-Buttons heißen pro Seite unterschiedlich:
 - Selektion per CLI: `npx playwright test --grep @desktop` oder `--grep-invert @mobile`
 - Viewport-Konvention: Desktop-Tests nutzen `1280x720` (Default in playwright.config.ts), Mobile-Tests (PROJ-0006) nutzen `390x844` per `test.use({ viewport: ... })`
 
-## Accessibility / Keyboard-Navigation
+## Timeouts
+
+- Checkout-Flows (PROJ-0005, PROJ-0006, PROJ-0007) sind lang (>15 Schritte) → `test.setTimeout(120000)` setzen
+- Ohne explizites Timeout reicht das 30s-Default bei `slowMo`-Nutzung nicht aus
 
 - Snackbar schließen: `page.keyboard.press('Escape')` (Alternative zum X-Button-Klick)
 - `<mat-select>`: Tab zum Select, `ArrowDown` öffnet Panel + wählt erste Option, `Enter` bestätigt Auswahl

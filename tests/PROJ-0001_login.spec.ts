@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('PROJ-0001: Juice Shop Login Test', () => {
   test('Successful Login with a test user @desktop', async ({ page }) => {
-    const testEmail = 'testuser_vortrag@example.com';
+    const testEmail = `user_proj0001_${Date.now()}@example.com`;
     const testPassword = 'SuperSafe123!';
 
     // Schritt 1

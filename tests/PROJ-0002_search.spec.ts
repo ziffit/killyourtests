@@ -6,20 +6,19 @@ test.describe('PROJ-0002: Juice Shop Product Search Test', () => {
     await page.goto('/');
 
     // Schritt 2
-    await page.locator('button[aria-label="Close Welcome Banner"]').click();
-    await page.locator('[aria-label="dismiss cookie message"]').click();
+    await page.getByRole('button', { name: 'Close Welcome Banner' }).click();
+    await page.getByRole('button', { name: 'dismiss cookie message' }).click().catch(() => {});
 
     // Schritt 3
     await page.locator('.mat-search_icon-search').click();
-    const searchInput = page.locator('input#mat-input-0');
-    await searchInput.fill('apple');
+    await page.getByRole('textbox').fill('apple');
     await page.keyboard.press('Enter');
+    await page.waitForTimeout(1500);
 
     // Schritt 4
-    const results = page.locator('mat-grid-tile:has-text("Apple Juice")');
-    await expect(results.first()).toBeVisible();
+    await expect(page.getByText('Apple Juice').first()).toBeVisible();
 
     // Schritt 5
-    await expect(page.locator('mat-grid-tile:has-text("Banana Milkshake")')).not.toBeVisible();
+    await expect(page.getByText('Banana Milkshake')).not.toBeVisible();
   });
 });

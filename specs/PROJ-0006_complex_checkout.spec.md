@@ -4,9 +4,12 @@ tags: [regression, mobile]
 
 # PROJ-0006: Juice Shop Complex Checkout Flow
 
-## Testdata Generation
-- generate a random cityname. Concat one random entry from the following Lists to generate the name:
-  [Groß,Klein,Mittel,Ober,Unter],[rot,blau,grün,gelb],[apfel,bannen,kirschen,rüben,kohlen,rauken],[berg,thal,dorf,furt,bach]
+## Testdaten
+- Verwende einen zufällig generierten Stadtnamen, bestehend aus je einem zufälligen Eintrag aus den folgenden Kategorien:
+  - Größe: Groß, Klein, Mittel, Ober, Unter
+  - Farbe: rot, blau, grün, gelb
+  - Objekt: Apfel, Banane, Kirschen, Rüben, Kohlen, Rauken
+  - Ort: Berg, Thal, Dorf, Furt, Bach
 
 ## Scenario: Complete a large order and verify detailed order confirmation
 
