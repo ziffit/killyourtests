@@ -1,24 +1,55 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('PROJ-0002: Juice Shop Product Search Test', () => {
-  test('Search for apple juice and verify results @desktop', async ({ page }) => {
-    // Schritt 1
-    await page.goto('/');
-
-    // Schritt 2
-    await page.getByRole('button', { name: 'Close Welcome Banner' }).click();
-    await page.getByRole('button', { name: 'dismiss cookie message' }).click().catch(() => {});
-
-    // Schritt 3
+  const doSearch = async (page: import('@playwright/test').Page, term: string) => {
     await page.locator('.mat-search_icon-search').click();
-    await page.getByRole('textbox').fill('apple');
+    await page.getByRole('textbox').fill(term);
     await page.keyboard.press('Enter');
     await page.waitForTimeout(1500);
+  };
 
-    // Schritt 4
+  const goToTestReadyStartpage = async (page: import('@playwright/test').Page) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Close Welcome Banner' }).click();
+    await page.getByRole('button', { name: 'dismiss cookie message' }).click().catch(() => {});
+  };
+
+  test('Search for products and verify results — apple @regression @fast @desktop', async ({ page }) => {
+    await goToTestReadyStartpage(page);
+
+    // Schritt 2
+    await doSearch(page, 'apple');
+
+    // Schritt 3
     await expect(page.getByText('Apple Juice').first()).toBeVisible();
 
-    // Schritt 5
+    // Schritt 4
     await expect(page.getByText('Banana Milkshake')).not.toBeVisible();
+  });
+
+  test('Search for products and verify results — banana @regression @fast @desktop', async ({ page }) => {
+    await goToTestReadyStartpage(page);
+
+    // Schritt 2
+    await doSearch(page, 'banana');
+
+    // Schritt 3
+    await expect(page.getByText('Banana Juice').first()).toBeVisible();
+
+    // Schritt 4
+    await expect(page.getByText('Apple Juice')).not.toBeVisible();
+  });
+
+  test('Search for products and verify results — carrot @regression @fast @desktop', async ({ page }) => {
+    await goToTestReadyStartpage(page);
+
+    // Schritt 2
+    await doSearch(page, 'carrot');
+
+    // Schritt 3
+    await expect(page.getByText('Carrot Juice').first()).toBeVisible();
+
+    // Schritt 4
+    await expect(page.getByText('Apple Juice')).not.toBeVisible();
   });
 });

@@ -38,6 +38,15 @@ Die "Continue"-Buttons heißen pro Seite unterschiedlich:
 - Der Minus-Button ist bei qty=1 enabled (nicht disabled), reduziert die Menge aber nicht unter 1
 - Checkout-Button `button#checkoutButton` ist disabled bei leerem Basket (`toBeDisabled()`)
 
+## "testbereite Seite"-Konvention
+
+`"Gehe zur testbereiten {Seite}"` ersetzt `"Navigiere zu {Seite}"` + `"Schließe Banner"`. Bedeutung: Zur URL navigieren + alle störenden Overlay-Banner schließen.
+
+| URL | Banner | Code |
+|-----|--------|------|
+| `/#/login` | Welcome + Cookie | `await page.goto('/#/login'); await page.getByRole('button', { name: 'Close Welcome Banner' }).click(); await page.getByRole('button', { name: 'dismiss cookie message' }).click();` |
+| `/` | Welcome (Cookie erscheint nicht auf `/`) | `await page.goto('/'); await page.getByRole('button', { name: 'Close Welcome Banner' }).click(); await page.getByRole('button', { name: 'dismiss cookie message' }).click().catch(() => {});` |
+
 ## Testdaten-Generierung
 
 - Zufällige Testdaten (z.B. Stadtname) werden inline via `pickRandom()`-Helper aus vorgegebenen Listen generiert, siehe `specs/PROJ-0006_complex_checkout.spec.md` "Testdata Generation"

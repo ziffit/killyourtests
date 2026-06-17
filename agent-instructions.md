@@ -27,6 +27,7 @@ Specs werden geschrieben, als würdest du einen menschlichen Tester per Navigati
   - ✅ `"Gib als Land 'Testland' ein"` (wenn es der einzige Schritt zum Ausfüllen ist)
   - ❌ `"Gib ein valides Land ein"`
 - **Navigator-Stil**: "Navigiere zum Login (`/#/login`)" für URL-Angaben ist erlaubt – beschreibt das Ziel, nicht den technischen Pfad
+- **"testbereite Seite"-Konvention**: Statt `"Navigiere zu X"` + `"Schließe Banner"` → `"Gehe zur testbereiten {Seite}"`. "testbereit" impliziert: navigieren + Welcome-Banner schließen + Cookie-Consent schließen. Die konkrete Banner-Logik pro Seite ist in `learnings.md` dokumentiert.
 
 ## Spec-Review (VOR der Test-Generierung)
 
@@ -47,6 +48,33 @@ Bei Verstößen FRAGT DER AGENT AKTIV NACH und macht ggf. Verbesserungsvorschlä
 Die Spec-Review ist **blockierend**: Ohne eine klare, präzise Spec wird kein Test generiert.
 
 **Vor dem Review** MUSS `learnings.md` konsultiert werden, um bekannte Patterns und Fallstricke zu berücksichtigen (z.B. Checkout-Button-Namen, Snackbar-Handling, bekannte Accessibility-Limitationen).
+
+## Testdaten-Tabellen (parametrisierte Tests)
+
+Ein `## Testdaten`-Block mit Markdown-Tabelle **vor** dem `## Scenario` erzeugt einen Test pro Tabellenzeile:
+
+```markdown
+## Testdaten
+
+| Suchbegriff | Sichtbar     |
+|-------------|--------------|
+| apple       | Apple Juice  |
+| banana      | Banana Juice |
+
+## Scenario: Search and verify results
+
+1. Gehe zur testbereiten Startseite (`/`)
+2. Suche nach "{Suchbegriff}"
+3. Verifiziere dass "{Sichtbar}" angezeigt wird
+```
+
+- Die Tabellen-Kopfzeile definiert die Variablennamen
+- Jede Folgezeile ist ein Datensatz
+- `{Variable}` im Schritttext wird durch den Wert aus der Zeile ersetzt
+- Der Block ist **optional** – fehlt er, wird ein einzelner Test generiert (bisheriges Verhalten)
+- **Pro Zeile wird ein eigener `test()`-Block generiert** (kein `test.each`), damit Fehler im Report einzeln sichtbar sind
+- Testname: `{Scenario-Name} — {Wert-der-ersten-Spalte}` + Tags
+- **Keine leeren/null-Werte** in der Tabelle erlaubt – wenn ein Fall keinen Wert für eine Spalte hat, gehört er in ein separates Scenario
 
 ## Test-Erstellung
 
