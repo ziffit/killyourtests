@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures/spec-annotation';
 
 test.describe('PROJ-0001: Juice Shop Login Test', () => {
   test('Successful Login with a test user @desktop', async ({ page }) => {

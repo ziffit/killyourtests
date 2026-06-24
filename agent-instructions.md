@@ -86,8 +86,9 @@ Jede Spec MUSS als Tag entweder `desktop` (Default-Viewport 1280×720) oder `mob
 1. `learnings.md` auf relevante Patterns prüfen
 2. Spec-Review durchführen (s.o.)
 3. Test schreiben – dabei den Test immer wieder mit `npx playwright test --headed` ausführen, um Selektoren und Abläufe im Browser zu prüfen und zu korrigieren
-4. Finale Verifikation: `npx playwright test --headed`
-5. Falls neue Erkenntnisse gewonnen: in `learnings.md` dokumentieren
+4. **Import-Regel:** `import { test, expect } from '../fixtures/spec-annotation'` statt `@playwright/test` verwenden. Das `specAttachment`-Autofixture hängt die Spec-Inhalte automatisch als Attachment an den HTML-Report – **kein `attachSpec()`-Aufruf nötig**.
+5. Finale Verifikation: `npx playwright test --headed`
+6. Falls neue Erkenntnisse gewonnen: in `learnings.md` dokumentieren
 
 ## Assertions & Selektoren im generierten Code
 

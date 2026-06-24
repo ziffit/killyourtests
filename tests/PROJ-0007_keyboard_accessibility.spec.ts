@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures/spec-annotation';
 
 test.describe('PROJ-0007: Juice Shop Keyboard-Only Accessibility', () => {
   test.setTimeout(120000);

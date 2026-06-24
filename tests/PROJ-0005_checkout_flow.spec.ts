@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures/spec-annotation';
 
 test.describe('PROJ-0005: Juice Shop Checkout Flow', () => {
   test.setTimeout(120000);

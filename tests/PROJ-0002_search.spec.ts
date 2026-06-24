@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures/spec-annotation';
 
 test.describe('PROJ-0002: Juice Shop Product Search Test', () => {
   const doSearch = async (page: import('@playwright/test').Page, term: string) => {
