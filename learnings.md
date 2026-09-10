@@ -68,6 +68,7 @@ Die "Continue"-Buttons heißen pro Seite unterschiedlich:
 - `<select>` (nativ): `ArrowDown`/`ArrowUp` navigiert direkt, keine Bestätigung nötig → danach `Tab` zum nächsten Feld
 - `<mat-radio-button>`: Angular-Material-Radio reagiert nicht zuverlässig auf `press('Space')` – daher `click()` verwenden
 - `<mat-expansion-panel-header>`: `.press('Enter')` zum Öffnen/Schließen
+- Payment-Seite nach Adressanlage: Die Snackbar `"The address at ... has been successfully added"` kann bis zur Kreditkartenanlage sichtbar bleiben → vor dem Öffnen des Kreditkarten-Panels per `.mat-simple-snackbar-action button` schließen.
 - Formular-Navigation: `focus()` auf erstes Feld, dann `Tab` zwischen Feldern, `page.keyboard.type()` zum Befüllen
 - **Bekannte Limitation**: Manche Angular-Material-Buttons (z.B. `button.btn-next`) reagieren nicht auf Enter-Taste – sie brauchen `click()` (Accessibility-Bug in der App)
 - `.mat-search_icon-search` ist kein Button → öffnen per `click()` nötig, nicht per Enter

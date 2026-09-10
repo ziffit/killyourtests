@@ -1,10 +1,52 @@
 import { execSync } from 'child_process';
 
+function getAvailableDockerContexts(): string[] {
+  try {
+    const output = execSync('docker context ls --format "{{.Name}}"', {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    return output
+      .split('\n')
+      .map((line: string) => line.trim())
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+function restartJuiceShopContainer() {
+  const contexts = getAvailableDockerContexts();
+  const hasDesktopLinuxContext = contexts.includes('desktop-linux');
+  const commands: string[] = [];
+
+  // Prefer Docker Desktop Linux engine when available (common on macOS/Windows).
+  if ((process.platform === 'darwin' || process.platform === 'win32') && hasDesktopLinuxContext) {
+    commands.push('docker --context desktop-linux compose restart juice-shop');
+  }
+
+  // Default command for Linux and as fallback on all platforms.
+  commands.push('docker compose restart juice-shop');
+
+  const errors: string[] = [];
+  for (const cmd of commands) {
+    try {
+      console.log(`Trying: ${cmd}`);
+      execSync(cmd, { stdio: 'inherit' });
+      return;
+    } catch (error) {
+      errors.push(error instanceof Error ? error.message : String(error));
+    }
+  }
+
+  throw new Error(`Failed to restart Juice Shop container. Tried commands: ${commands.join(' | ')}. Errors: ${errors.join(' | ')}`);
+}
+
 async function globalSetup() {
   console.log('\nResetting OWASP Juice Shop database via Docker restart...');
   try {
     // Restart the container to clear in-memory SQLite database and upload directories
-    execSync('docker compose restart juice-shop', { stdio: 'inherit' });
+    restartJuiceShopContainer();
     
     // Give Juice Shop a couple of seconds to boot up and be ready
     console.log('Waiting for Juice Shop to be ready...');
@@ -16,7 +58,7 @@ async function globalSetup() {
           ready = true;
           break;
         }
-      } catch (e) {
+      } catch {
         // Ignored, service not ready yet
       }
       await new Promise(resolve => setTimeout(resolve, 1000));

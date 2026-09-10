@@ -1,0 +1,105 @@
+# Agent Instructions
+
+Diese Datei beschreibt die verbindlichen Projektregeln fuer KI-Agenten und Menschen, die in diesem Repository am Markdown-First-E2E-Testing arbeiten.
+
+## Projektkontext
+
+MarkupPlayRight erzeugt Playwright-Tests aus menschenlesbaren Markdown-Spezifikationen.
+
+- `specs/*.spec.md` ist die fachliche Source of Truth.
+- `tests/*.spec.ts` ist generierter Playwright-Code und bleibt zur Spec rueckverfolgbar.
+- `learnings.md` sammelt app-spezifische Patterns, Selektoren und Fallstricke.
+- `playbook/` enthaelt den wiederverwendbaren Kern fuer andere Projekte.
+
+## Grundregeln fuer Specs
+
+Specs werden wie Navigationsanweisungen fuer menschliche Tester geschrieben.
+
+- Schreibe Schritte imperativ: "Klicke auf ...", "Navigiere zu ...", "Gib ... ein".
+- Verwende keine technischen Selektoren in Specs: keine CSS-Klassen, IDs oder `aria-label`.
+- Beschreibe UI-Elemente ueber Kontext, Position, sichtbaren Text und Zweck.
+- Jede Zeile enthaelt genau einen logischen Schritt aus Benutzersicht.
+- Trenne Aktion und Verifikation strikt in separate Schritte.
+- Verifikationen beschreiben die konkrete Erwartung: was sichtbar ist und wo.
+- Testdaten muessen explizit sein; keine Platzhalter wie "valide Adresse".
+- Jede Spec braucht mindestens einen Viewport-Tag: `desktop` oder `mobile`.
+
+## Testdaten-Tabellen
+
+Ein optionaler `## Testdaten`-Block vor `## Scenario` erzeugt einen Testfall pro Tabellenzeile.
+
+```markdown
+## Testdaten
+
+| Suchbegriff | Sichtbar    |
+|-------------|-------------|
+| apple       | Apple Juice |
+
+## Scenario: Search and verify results
+
+1. Gehe zur testbereiten Startseite (`/`)
+2. Suche nach "{Suchbegriff}"
+3. Verifiziere dass "{Sichtbar}" angezeigt wird
+```
+
+- Tabellenkopfzeilen sind Variablennamen.
+- `{Variable}` im Schritttext wird pro Tabellenzeile ersetzt.
+- Leere Werte sind nicht erlaubt; nutze fuer abweichende Faelle ein separates Scenario.
+- Pro Zeile entsteht ein eigener `test()`-Block, kein `test.each`.
+
+## Spec-Review vor Testgenerierung
+
+Vor jeder Testgenerierung muss die Spec blockierend geprueft werden.
+
+| Problem | Reaktion |
+|---------|----------|
+| Aktion und Verifikation kombiniert | Trennung vorschlagen und klaeren |
+| Mikro-Steuerung einzelner Felder | Zu einem logischen Schritt zusammenfassen |
+| Zwei unzusammenhaengende Aktionen in einem Schritt | Trennung vorschlagen |
+| Vage Aktion | Nach Button, Ort, Text oder Zweck fragen |
+| Vage Verifikation | Nach konkretem Element, Text, Wert oder URL fragen |
+| Ungenaue Testdaten | Konkrete Werte erfragen |
+| Unklare Auswahl | Gewuenschte Option erfragen |
+| Mehrdeutige Beschreibung | Praezisierung oder Positionsangabe erfragen |
+
+Ohne klare Spec wird kein Test generiert.
+
+## Playwright-Testgenerierung
+
+- Vor dem Schreiben eines Tests `learnings.md` lesen.
+- Importiere `test` und `expect` aus `../fixtures/spec-annotation`, nicht direkt aus `@playwright/test`.
+- Das `specAttachment`-Autofixture haengt die Spec automatisch an den HTML-Report; kein manueller `attachSpec()`-Aufruf.
+- Jeder Assertion-Block bekommt einen `// Schritt N`-Kommentar passend zum Spec-Step.
+- `page.locator('body')` ist fuer Assertions nicht erlaubt.
+- Priorisiere Selektoren so:
+  1. `page.getByRole()` / `page.getByTestId()`
+  2. `page.getByLabel()` / `page.getByPlaceholder()`
+  3. `page.getByText()` / `:has-text()` / `filter()`
+  4. stabile IDs
+  5. semantische Selektoren mit Kontext
+
+## Fehlerbehebung
+
+Wenn ein Test fehlschlaegt:
+
+1. Fuehre den betroffenen Test aus und analysiere Fehlermeldung, Trace, Screenshot und Kontext.
+2. Entscheide, ob die Ursache in der Spec oder im Test-Code liegt.
+3. Bei unklarer oder falscher Spec: Spec praezisieren oder Anwender fragen.
+4. Bei Test-Code-Fehler: Test korrigieren und neue Erkenntnis in `learnings.md` sichern.
+5. Fuehre den korrigierten Test erneut aus.
+6. Iteriere, bis der Test erfolgreich ist oder ein externer Blocker dokumentiert ist.
+
+## Projekt-spezifische Konventionen
+
+- "Gehe zur testbereiten {Seite}" bedeutet: Zur URL navigieren und stoerende Overlays wie Welcome-Banner oder Cookie-Consent schliessen.
+- Die konkrete Umsetzung dieser Konvention steht in `learnings.md`.
+- Checkout-Flows und andere lange Tests koennen ein erhoehtes Timeout benoetigen.
+
+## Wiederverwendung in anderen Projekten
+
+Nutze `playbook/`, wenn dieses Vorgehen in ein anderes Projekt uebernommen werden soll. Der Zielzustand ist:
+
+- generische Regeln aus `playbook/AGENTS.template.md` uebernehmen,
+- Skills aus `playbook/skills/` kopieren,
+- `playbook/learnings.template.md` als projektspezifische Wissensbasis starten,
+- App-spezifische Details nicht aus diesem Beispielprojekt uebernehmen.
