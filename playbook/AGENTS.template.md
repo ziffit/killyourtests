@@ -77,3 +77,4 @@ Kopiere die Skills aus `playbook/skills/` in dein Projekt oder dein Agenten-/CLI
 - `review-markdown-spec`
 - `generate-playwright-test-from-spec`
 - `debug-playwright-test-failure`
+- `testmanager` (vor Commits mit geaenderten Specs)

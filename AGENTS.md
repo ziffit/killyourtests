@@ -89,6 +89,14 @@ Wenn ein Test fehlschlaegt:
 5. Fuehre den korrigierten Test erneut aus.
 6. Iteriere, bis der Test erfolgreich ist oder ein externer Blocker dokumentiert ist.
 
+## Pre-Commit-Regeln
+
+Vor jedem Commit mit geaenderten oder neuen Specs den testmanager-Skill ausfuehren.
+
+- `playbook/skills/testmanager/SKILL.md` prueft Test-Pyramide, Duplikate und Konsolidierung.
+- Der Pre-Commit-Hook warnt automatisch, wenn `.spec.md`-Dateien im Commit sind.
+- Der Hook blockiert nicht; die tiefe Analyse uebernimmt der Skill.
+
 ## Projekt-spezifische Konventionen
 
 - "Gehe zur testbereiten {Seite}" bedeutet: Zur URL navigieren und stoerende Overlays wie Welcome-Banner oder Cookie-Consent schliessen.

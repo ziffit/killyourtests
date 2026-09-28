@@ -21,6 +21,7 @@ skills/
   review-markdown-spec/
   generate-playwright-test-from-spec/
   debug-playwright-test-failure/
+  testmanager/
 ```
 
 ## Schritt 1: Playbook-Dateien kopieren
