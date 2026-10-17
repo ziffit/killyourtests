@@ -15,41 +15,44 @@ test.describe('PROJ-0002: Juice Shop Product Search Test', () => {
   };
 
   test('Search for products and verify results — apple @regression @fast @desktop', async ({ page }) => {
+    // Schritt 1: Gehe zur testbereiten Startseite (`/`)
     await goToTestReadyStartpage(page);
 
-    // Schritt 2
+    // Schritt 2: Suche nach "apple"
     await doSearch(page, 'apple');
 
-    // Schritt 3
+    // Schritt 3: Verifiziere dass "Apple Juice" in den Suchergebnissen angezeigt wird
     await expect(page.getByText('Apple Juice').first()).toBeVisible();
 
-    // Schritt 4
+    // Schritt 4: Verifiziere dass "Banana Milkshake" nicht in den Suchergebnissen angezeigt wird
     await expect(page.getByText('Banana Milkshake')).not.toBeVisible();
   });
 
   test('Search for products and verify results — banana @regression @fast @desktop', async ({ page }) => {
+    // Schritt 1: Gehe zur testbereiten Startseite (`/`)
     await goToTestReadyStartpage(page);
 
-    // Schritt 2
+    // Schritt 2: Suche nach "banana"
     await doSearch(page, 'banana');
 
-    // Schritt 3
+    // Schritt 3: Verifiziere dass "Banana Juice" in den Suchergebnissen angezeigt wird
     await expect(page.getByText('Banana Juice').first()).toBeVisible();
 
-    // Schritt 4
+    // Schritt 4: Verifiziere dass "Apple Juice" nicht in den Suchergebnissen angezeigt wird
     await expect(page.getByText('Apple Juice')).not.toBeVisible();
   });
 
   test('Search for products and verify results — carrot @regression @fast @desktop', async ({ page }) => {
+    // Schritt 1: Gehe zur testbereiten Startseite (`/`)
     await goToTestReadyStartpage(page);
 
-    // Schritt 2
+    // Schritt 2: Suche nach "carrot"
     await doSearch(page, 'carrot');
 
-    // Schritt 3
+    // Schritt 3: Verifiziere dass "Carrot Juice" in den Suchergebnissen angezeigt wird
     await expect(page.getByText('Carrot Juice').first()).toBeVisible();
 
-    // Schritt 4
+    // Schritt 4: Verifiziere dass "Apple Juice" nicht in den Suchergebnissen angezeigt wird
     await expect(page.getByText('Apple Juice')).not.toBeVisible();
   });
 });

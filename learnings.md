@@ -11,7 +11,7 @@ Vor dem Schreiben eines Tests konsultieren, nach erfolgreicher Verifikation erg�
 ## Assertions & Selektoren (ALLGEMEIN)
 
 - **`page.locator('body')` ist verboten** – immer einen spezifischen Container/Element-Selektor verwenden
-- Jede Assertion bekommt einen `// Schritt N`-Kommentar zur Rückverfolgbarkeit zur Spec
+- Jede Assertion bekommt einen `// Schritt N: <voller Schritttext>`-Kommentar zur Rückverfolgbarkeit zur Spec – der komplette Step-Text, nicht nur die Nummer
 - Bei nicht eindeutigen Selektoren zuerst prüfen, ob die Spec präzisiert werden muss, bevor der Selektor "erzwungen" wird
 - `mat-radio-button` ohne `.first()`/`.filter()` ist mehrdeutig → immer eingrenzen
 

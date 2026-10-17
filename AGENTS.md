@@ -69,7 +69,7 @@ Ohne klare Spec wird kein Test generiert.
 - Vor dem Schreiben eines Tests `learnings.md` lesen.
 - Importiere `test` und `expect` aus `../fixtures/spec-annotation`, nicht direkt aus `@playwright/test`.
 - Das `specAttachment`-Autofixture haengt die Spec automatisch an den HTML-Report; kein manueller `attachSpec()`-Aufruf.
-- Jeder Assertion-Block bekommt einen `// Schritt N`-Kommentar passend zum Spec-Step.
+- Jeder Assertion-Block bekommt einen `// Schritt N: <voller Schritttext>`-Kommentar passend zum Spec-Step, mit dem vollstaendigen Text des Steps aus der Spec.
 - `page.locator('body')` ist fuer Assertions nicht erlaubt.
 - Priorisiere Selektoren so:
   1. `page.getByRole()` / `page.getByTestId()`

@@ -55,7 +55,7 @@ Ein optionaler `## Testdaten`-Block vor `## Scenario` parametrisiert die Spec.
 ## Playwright-Regeln
 
 - Verwende ein Projekt-Fixture, das die Spec im Report referenziert, falls vorhanden.
-- Jeder Assertion-Block referenziert den passenden Spec-Step mit `// Schritt N`.
+- Jeder Assertion-Block referenziert den passenden Spec-Step mit `// Schritt N: <voller Schritttext>` und zitiert dessen vollstaendigen Text.
 - Keine Assertions gegen `page.locator('body')`.
 - Bevorzuge nutzernahe Selektoren: Role, TestId, Label, Placeholder, sichtbarer Text.
 - Nutze technische Selektoren nur, wenn sie stabil und eindeutig sind.
