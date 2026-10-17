@@ -3,7 +3,7 @@ import { test, expect } from '../fixtures/spec-annotation';
 test.describe('PROJ-0005: Juice Shop Checkout Flow', () => {
   test.setTimeout(120000);
 
-  test('Complete a full checkout flow from basket to order confirmation @desktop', async ({ page }) => {
+  test('Complete a full checkout flow from basket to order confirmation @regression @desktop', async ({ page }) => {
     const uniqueEmail = `user_proj0005_${Date.now()}@example.com`;
 
     // Schritt 1

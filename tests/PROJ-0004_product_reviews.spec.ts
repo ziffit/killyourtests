@@ -1,7 +1,7 @@
 import { test, expect } from '../fixtures/spec-annotation';
 
 test.describe('PROJ-0004: Juice Shop Product Reviews', () => {
-  test('Add a new review to a product and verify it is visible @desktop', async ({ page }) => {
+  test('Add a new review to a product and verify it is visible @regression @desktop', async ({ page }) => {
     const uniqueEmail = `user_proj0004_${Date.now()}@example.com`;
 
     // Schritt 1

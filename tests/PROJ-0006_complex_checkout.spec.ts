@@ -5,7 +5,7 @@ test.describe('PROJ-0006: Juice Shop Complex Checkout Flow', () => {
 
   test.use({ viewport: { width: 390, height: 844 } });
 
-  test('Complete a large order and verify detailed order confirmation @mobile', async ({ page }) => {
+  test('Complete a large order and verify detailed order confirmation @regression @mobile', async ({ page }) => {
     const uniqueEmail = `user_proj0006_${Date.now()}@example.com`;
     const password = 'SuperSafe123!';
 

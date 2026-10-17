@@ -25,7 +25,7 @@ test.describe('PROJ-0008: Juice Shop Basket Negative Tests', () => {
     await expect(page.locator('button[aria-label="Show the shopping cart"]')).toBeVisible();
   };
 
-  test('Checkout with empty basket is not possible @mobile', async ({ page }) => {
+  test('Checkout with empty basket is not possible @regression @mobile', async ({ page }) => {
     const email = `user_proj0008_empty_${Date.now()}@example.com`;
     // Schritte 1-4 (via helper)
     await registerAndLogin(page, email);
@@ -38,7 +38,7 @@ test.describe('PROJ-0008: Juice Shop Basket Negative Tests', () => {
     await expect(page.locator('button#checkoutButton')).toBeDisabled();
   });
 
-  test('Remove all items from basket leaves basket empty @mobile', async ({ page }) => {
+  test('Remove all items from basket leaves basket empty @regression @mobile', async ({ page }) => {
     const email = `user_proj0008_remove_${Date.now()}@example.com`;
     // Schritte 1-4 (via helper)
     await registerAndLogin(page, email);
