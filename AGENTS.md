@@ -94,8 +94,8 @@ Wenn ein Test fehlschlaegt:
 Vor jedem Commit mit geaenderten oder neuen Specs den testmanager-Skill ausfuehren.
 
 - `playbook/skills/testmanager/SKILL.md` prueft Test-Pyramide, Duplikate und Konsolidierung.
-- Der Pre-Commit-Hook warnt automatisch, wenn `.spec.md`-Dateien im Commit sind.
-- Der Hook blockiert nicht; die tiefe Analyse uebernimmt der Skill.
+- Der Pre-Commit-Hook liegt im Repo unter `hooks/pre-commit` und wird automatisch mit `npm run setup` aktiviert (`git config core.hooksPath hooks`).
+- Der Hook warnt, wenn `.spec.md`-Dateien im Commit sind; er blockiert nicht. Die tiefe Analyse uebernimmt der Skill.
 
 ## Projekt-spezifische Konventionen
 

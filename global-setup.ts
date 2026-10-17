@@ -1,5 +1,7 @@
 import { execSync } from 'child_process';
 
+const baseUrl = process.env.BASE_URL || 'http://127.0.0.1:3000';
+
 function getAvailableDockerContexts(): string[] {
   try {
     const output = execSync('docker context ls --format "{{.Name}}"', {
@@ -17,16 +19,24 @@ function getAvailableDockerContexts(): string[] {
 
 function restartJuiceShopContainer() {
   const contexts = getAvailableDockerContexts();
-  const hasDesktopLinuxContext = contexts.includes('desktop-linux');
+  // Prefer Docker Desktop Linux engine when available (common on macOS/Windows).
+  const useDesktopLinux =
+    (process.platform === 'darwin' || process.platform === 'win32') && contexts.includes('desktop-linux');
+  const docker = useDesktopLinux ? 'docker --context desktop-linux' : 'docker';
+
+  // `compose restart` exits 0 as a silent no-op when the container is missing.
+  // Check first: fresh clone -> create via "up -d", otherwise restart (DB reset).
+  const containerId = execSync(`${docker} compose ps -q juice-shop`, {
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'ignore'],
+  }).trim();
+  const primary = containerId ? 'compose restart juice-shop' : 'compose up -d juice-shop';
   const commands: string[] = [];
 
-  // Prefer Docker Desktop Linux engine when available (common on macOS/Windows).
-  if ((process.platform === 'darwin' || process.platform === 'win32') && hasDesktopLinuxContext) {
-    commands.push('docker --context desktop-linux compose restart juice-shop');
+  if (useDesktopLinux) {
+    commands.push(`${docker} ${primary}`);
   }
-
-  // Default command for Linux and as fallback on all platforms.
-  commands.push('docker compose restart juice-shop');
+  commands.push(`${docker} ${primary}`, `${docker} compose up -d juice-shop`);
 
   const errors: string[] = [];
   for (const cmd of commands) {
@@ -39,21 +49,23 @@ function restartJuiceShopContainer() {
     }
   }
 
-  throw new Error(`Failed to restart Juice Shop container. Tried commands: ${commands.join(' | ')}. Errors: ${errors.join(' | ')}`);
+  throw new Error(
+    `Juice-Shop-Container konnte nicht gestartet werden. Versucht: ${commands.join(' | ')}. ` +
+      `Fehler: ${errors.join(' | ')}. Ist Docker gestartet ("docker info") und Compose v2 installiert?`,
+  );
 }
 
 async function globalSetup() {
-  console.log('\nResetting OWASP Juice Shop database via Docker restart...');
+  console.log(`\nResetting OWASP Juice Shop database at ${baseUrl} via Docker restart...`);
+  const maxWaitSeconds = 60;
   try {
-    // Restart the container to clear in-memory SQLite database and upload directories
     restartJuiceShopContainer();
-    
-    // Give Juice Shop a couple of seconds to boot up and be ready
+
     console.log('Waiting for Juice Shop to be ready...');
     let ready = false;
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < maxWaitSeconds; i++) {
       try {
-        const response = await fetch('http://localhost:3000');
+        const response = await fetch(baseUrl);
         if (response.ok) {
           ready = true;
           break;
@@ -61,10 +73,13 @@ async function globalSetup() {
       } catch {
         // Ignored, service not ready yet
       }
+      if (i % 10 === 9) {
+        console.log(`Still waiting (${i + 1}s)...`);
+      }
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
     if (!ready) {
-      throw new Error('Juice Shop did not start in time.');
+      throw new Error(`Juice Shop did not start within ${maxWaitSeconds}s at ${baseUrl}.`);
     }
     console.log('Juice Shop is ready. Starting tests...\n');
   } catch (error) {

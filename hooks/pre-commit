@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Pre-Commit-Hook: Warnt vor Commits mit geaenderten/neuen Markdown-Specs.
+# Blockiert nichts; verweist auf den testmanager-Skill fuer tiefe Analyse.
+#
+# Verteilung: Dieser Hook liegt im Repo unter hooks/pre-commit und wird
+# aktiviert mit `git config core.hooksPath hooks` (automatisch via npm run setup).
+
+CHANGED_SPECS=$(git diff --cached --name-only --diff-filter=ACM | grep '\.spec\.md$')
+
+if [ -z "$CHANGED_SPECS" ]; then
+    exit 0
+fi
+
+echo ""
+echo "Hinweis: Mit diesem Commit werden Markdown-Specs geaendert/neu angelegt:"
+echo "$CHANGED_SPECS" | sed 's/^/  - /'
+echo ""
+echo "Pruefe vor dem Push mit dem testmanager-Skill:"
+echo "  1. Test-Pyramide: Testdaten testen unterschiedliche Fachlichkeit?"
+echo "  2. Keine inhaltlich aehnlichen Tests ueber Specs hinweg?"
+echo "  3. Gibt es Konsolidierungspotenzial (geteiltes Setup)?"
+echo "  Ausfuehren: opencode bzw. Skill 'testmanager' aufrufen."
+echo ""

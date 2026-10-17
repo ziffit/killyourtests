@@ -18,8 +18,8 @@ Spec (Spec.md) → KI-Review → KI generiert Test (spec.ts) → Ausführung →
 
 ## Voraussetzungen
 
-- [Node.js](https://nodejs.org/) 18+
-- [Docker Engine](https://docker.com/) (für die Ziel-Applikation)
+- [Node.js](https://nodejs.org/) 20+ (LTS empfohlen)
+- [Docker](https://docker.com/) mit Compose v2 (Docker Desktop oder Engine + compose plugin)
 
 ## Setup
 
@@ -27,8 +27,7 @@ Spec (Spec.md) → KI-Review → KI generiert Test (spec.ts) → Ausführung →
 git clone <repo-url>
 cd MarkupPlayRight
 npm install
-docker compose up -d
-npx playwright install chromium
+npm run setup   # installiert Chromium, startet Juice Shop, aktiviert den Git-Hook
 ```
 
 ## Tests ausführen
@@ -40,9 +39,19 @@ npx playwright test --grep @desktop   # nur Desktop-Tests
 npx playwright test --grep @mobile    # nur Mobile-Tests
 ```
 
+## Fehlerbehebung
+
+| Problem | Lösung |
+|---------|--------|
+| "Juice Shop did not start in time" oder Docker-Fehler | Ist Docker gestartet? Prüfen mit `docker info` und `docker compose ps` |
+| Port 3000 bereits belegt | Container auf anderen Port legen, z.B. Linux/macOS: `JUICE_PORT=3100; export BASE_URL=http://127.0.0.1:3100`; Windows (PowerShell): `$env:JUICE_PORT="3100"; $env:BASE_URL="http://127.0.0.1:3100"`; dann `npm run setup` und `npm test` |
+| "Executable doesn't exist" beim Testlauf | `npx playwright install chromium` |
+
 ## Ziel-Applikation
 
 Die Tests laufen gegen [OWASP Juice Shop](https://owasp.org/www-project-juice-shop/) v17.1.1 – eine bewusst unsichere Webapplikation für Sicherheitstrainings.
+
+Wichtig bei größerer Nutzergruppe: Jeder `npm test`-Lauf startet per `global-setup` die Shop-Datenbank neu. Führe keine zwei Testläufe gleichzeitig gegen dieselbe Juice-Shop-Instanz aus — parallel sollte jeder einen eigenen Container mit eigenem Port nutzen (siehe Fehlerbehebung).
 
 ## Workflow für neue Tests
 
@@ -73,6 +82,7 @@ skills/
   review-markdown-spec/
   generate-playwright-test-from-spec/
   debug-playwright-test-failure/
+  testmanager/
 ```
 
 ### Startschritte

@@ -2,5 +2,5 @@ services:
   juice-shop:
     image: bkimminich/juice-shop:v17.1.1
     ports:
-      - "3000:3000"
+      - "${JUICE_PORT:-3000}:3000"
     restart: unless-stopped

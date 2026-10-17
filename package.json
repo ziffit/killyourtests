@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "KI-gestütztes E2E-Testing: Tests werden als Markdown-Spezifikationen beschrieben und von einer KI in Playwright-Code übersetzt.",
   "scripts": {
+    "setup": "playwright install chromium && docker compose up -d && git config core.hooksPath hooks",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:demo": "cross-env SLOW_MO=800 playwright test --headed"
@@ -11,6 +12,9 @@
   "author": "Felix Tensing, felix-spricht.de",
   "license": "ISC",
   "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
     "@types/node": "^25.9.3",
