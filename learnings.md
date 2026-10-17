@@ -47,9 +47,22 @@ Die "Continue"-Buttons heißen pro Seite unterschiedlich:
 | `/#/login` | Welcome + Cookie | `await page.goto('/#/login'); await page.getByRole('button', { name: 'Close Welcome Banner' }).click(); await page.getByRole('button', { name: 'dismiss cookie message' }).click();` |
 | `/` | Welcome (Cookie erscheint nicht auf `/`) | `await page.goto('/'); await page.getByRole('button', { name: 'Close Welcome Banner' }).click(); await page.getByRole('button', { name: 'dismiss cookie message' }).click().catch(() => {});` |
 
+## MCP-Refs
+
+- Die `aria-ref`s des MCP-Snapshots werden ungültig, sobald eine Snackbar erscheint bzw. die Seite navigiert/neu rendert → nach jeder Aktion neu `browser_snapshot`/`browser_find` und mit den aktuellen Refs arbeiten.
+- `mat-select` (Angular Material) unterstützt `browser_select_option` **nicht** ("Element is not a <select> element"). Option wählen per Klick auf den Combobox und dann die Option per Text-Selektor (`text=...`), nicht per `aria-ref`.
+
 ## Testdaten-Generierung
 
 - Zufällige Testdaten (z.B. Stadtname) werden inline via `pickRandom()`-Helper aus vorgegebenen Listen generiert, siehe `specs/PROJ-0006_complex_checkout.spec.md` "Testdata Generation"
+
+## MCP-Browser (Aufsicht bei der Spec-Erstellung)
+
+- Der Playwright-MCP-Server (`opencode.json`) startet **nicht headless**: das offizielle Google Chrome (`/opt/google/chrome`) öffnet sichtbar, sofern im laufenden Test bei `browser_*`-Tools zuerst per `browser_navigate` initialisiert.
+- Fenstergröße steuert nicht die MCP-Config, sondern Playwright selbst: outer ≈ Viewport + Chrome-UI (bei mobile 390x844 → Fenster ≈ 532x975) → immer kompakt.
+- Unter KDE/Wayland wird Chromiums `--window-position` von KWin (Smart-Placement) ignoriert → Flag aus `playwright-mcp.config.json` entfernt. Position/„Fenster oben“ via KDE-Fensterregel (Klasse `google-chrome`, Titel enthält `OWASP Juice Shop`) statt Browser-Flags.
+- Der Browser öffnet erst beim ersten MCP-Browser-Tool-Call einer Session, nicht schon beim Session-Start.
+- Pflicht: Beim Erstellen einer Spec den Browser sichtbar (headed) halten und jeden Schritt live durchklicken, bevor er in die Spec geschrieben wird (siehe `AGENTS.md`, Abschnitt "Spec-Erstellung im Browser (Pflicht)").
 
 ## Tags / Test-Selektion
 

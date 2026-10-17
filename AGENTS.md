@@ -24,6 +24,17 @@ Specs werden wie Navigationsanweisungen fuer menschliche Tester geschrieben.
 - Testdaten muessen explizit sein; keine Platzhalter wie "valide Adresse".
 - Jede Spec braucht mindestens einen Viewport-Tag: `desktop` oder `mobile`.
 
+## Spec-Erstellung im Browser (Pflicht)
+
+Jede Spec wird interaktiv im sichtbaren (headed) Browser des Playwright-MCP-Servers erarbeitet, damit der Anwender jeden Schritt live mitverfolgen kann.
+
+- Vor dem ersten Schritt einer neuen Spec den Browser per `browser_navigate` oeffnen und waehrend der gesamten Spec-Erstellung sichtbar lassen. Browser nicht headless betreiben, nicht schliessen und nicht in den Hintergrund schieben.
+- Jeden Spec-Schritt vor dem Aufschreiben real in der App durchklicken.
+- Alle Texte (Erfolgs- und Fehlermeldungen, Button-Labels, Links) aus der laufenden App ablesen. Nicht aus Quellcode, i18n-Dateien oder Erfahrungswerten raten.
+- Den kompletten Flow einmal live durchlaufen und erst danach die Spec schreiben und speichern.
+- Ist die App nicht erreichbar oder nicht startbar: anhalten und den Anwender fragen, statt die Spec ohne Live-Verifikation zu schreiben.
+- Abweichende Beobachtungen aus dem Live-Durchlauf gehen in `learnings.md` ein.
+
 ## Testdaten-Tabellen
 
 Ein optionaler `## Testdaten`-Block vor `## Scenario` erzeugt einen Testfall pro Tabellenzeile.
@@ -77,6 +88,15 @@ Ohne klare Spec wird kein Test generiert.
   3. `page.getByText()` / `:has-text()` / `filter()`
   4. stabile IDs
   5. semantische Selektoren mit Kontext
+
+## Testausfuehrung im sichtbaren Browser (Pflicht)
+
+Generierte Tests werden immer im sichtbaren (headed) Browser und mit `slowMo` ausgefuehrt, damit der Anwender den Ablauf live nachvollziehen kann.
+
+- Standardbefehl: `npm run test:demo` (setzt `SLOW_MO=800` und `--headed`).
+- Einzeltest sichtbar: `SLOW_MO=800 npx playwright test tests/<datei>.spec.ts --headed`.
+- Nicht headless ausfuehren, solange der Anwender zusieht.
+- Bei Fehlschlag den Lauf sichtbar wiederholen und Trace/Screenshot/Fehlermeldung auswerten.
 
 ## Fehlerbehebung
 
