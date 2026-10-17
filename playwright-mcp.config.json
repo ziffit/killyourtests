@@ -1,0 +1,16 @@
+{
+  "browser": {
+    "launchOptions": {
+      "args": [
+        "--test-type",
+        "--enable-automation"
+      ]
+    },
+    "contextOptions": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    }
+  }
+}

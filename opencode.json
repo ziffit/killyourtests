@@ -7,7 +7,9 @@
           "npx",
           "-y",
           "@playwright/mcp@latest",
-          "--no-sandbox"
+          "--config=./playwright-mcp.config.json",
+          "--user-data-dir=/tmp/pw-mcp-profile",
+          "--grant-permissions=notifications,geolocation,clipboard-read,clipboard-write"
         ]
       }
     }
