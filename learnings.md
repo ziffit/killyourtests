@@ -33,6 +33,19 @@ Die "Continue"-Buttons heißen pro Seite unterschiedlich:
 - nach Sprachwechsel Snackbar "Language has been changed to Deutsch" (nicht übersetzt) mit Button "Force page reload"
 - Deutsch-Verifikation: Header über Produktliste lautet "Alle Produkte"
 
+## Passwort-Reset (PROJ-0009)
+
+- Live verifizierte Deutsch-Texte: Link "Passwort vergessen?", Button "Ändern", Erfolgsmeldung "Dein Passwort wurde erfolgreich geändert." (inline auf der Seite, keine Snackbar), Login-Fehler "Email-Adresse oder Passwort ungültig."
+- Feld-Platzhalter bleiben englisch trotz Deutsch-UI: "Enter your email", "Your eldest siblings middle name?"
+- Flow auf `/#/forgot-password`: erst E-Mail eingeben, danach werden Sicherheitsfrage + neue Passwort-Felder enabled; Antwort "Alex", neues Passwort 2x eingeben
+- Selektoren Forgot-Password: `input#email`, `input#securityAnswer`, `input#newPassword`, `input#newPasswordRepeat`, `button#resetButton`
+- Mobile: Der "Passwort vergessen?"-Link wird oben von der Passwort-`mat-form-field` überlagert → Klick auf die Link-Mitte scheitert (intercepts pointer events) → `click({ position: { x: <Mitte>, y: <unterer Rand> } })` klickt die sichtbare untere Hälfte
+- Registrierung loggt nicht automatisch ein: Weiterleitung auf `/#/login` mit Snackbar "Registrierung erfolgreich abgeschlossen. Du kannst dich jetzt anmelden."
+- Abmelden (mobile): Sidenav öffnen → `[aria-label="Logout"]` klicken (aria-Label bleibt englisch) → `waitForURL(/#\/$/)`
+- Sicherheitsfrage-Dropdown: erste Option ist "Zweitname deines ältesten Geschwisters?"
+- Deutsch-Vorbedingung im Test: Cookie `language=de_DE` per `page.context().addCookies(...)` vor dem ersten `goto` setzen (UI zeigt dann "Alle Produkte", "Anmelden" etc.)
+- Welcome-Banner und Cookie-Consent bleiben in Deutsch-UI englisch: aria-Labels "Close Welcome Banner" / "dismiss cookie message" funktionieren unverändert
+
 ## Search & Basket
 
 - Such-Input auf der Startseite: `input#mat-input-0` hat **kein placeholder-Attribut** → `page.getByRole('textbox')` nutzen (einzige Textbox auf der Seite)
