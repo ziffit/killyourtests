@@ -26,6 +26,13 @@ Die "Continue"-Buttons heißen pro Seite unterschiedlich:
 | Payment | `button:has-text("Continue")` |
 | Order Summary (Bezahlen) | `button#checkoutButton` |
 
+## Sprache auf Deutsch umstellen
+
+- Sprach-Auswahl: Button "Language selection menu" (Erde-Symbol) in der Topbar → Overlays-Menü mit Radios
+- Radio-Option direkt anklicken scheitert (`.mat-radio-outer-circle` intercepts) → auf die umgebende Zeile (`generic [cursor=pointer]` mit Radio als Kind) klicken
+- nach Sprachwechsel Snackbar "Language has been changed to Deutsch" (nicht übersetzt) mit Button "Force page reload"
+- Deutsch-Verifikation: Header über Produktliste lautet "Alle Produkte"
+
 ## Search & Basket
 
 - Such-Input auf der Startseite: `input#mat-input-0` hat **kein placeholder-Attribut** → `page.getByRole('textbox')` nutzen (einzige Textbox auf der Seite)
