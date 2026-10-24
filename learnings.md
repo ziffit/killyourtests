@@ -76,7 +76,8 @@ Die "Continue"-Buttons heißen pro Seite unterschiedlich:
 - Tags werden als YAML-Frontmatter in Specs definiert: `tags: [regression, fast, desktop]`
 - Im Playwright-Test werden Tags an den Testnamen gehängt: `test('... @desktop @regression', ...)`
 - Selektion per CLI: `npx playwright test --grep @desktop` oder `--grep-invert @mobile`
-- Viewport-Konvention: Desktop-Tests nutzen `1280x720` (Default in playwright.config.ts), Mobile-Tests (PROJ-0006) nutzen `390x844` per `test.use({ viewport: ... })`
+- Viewport-Konvention: Desktop-Tests nutzen `1280x720` (Default in playwright.config.ts). Mobile-Tests nutzen `480x800` per `test.use({ viewport: ... })` — gilt für mobile Specs/Tests (PROJ-0006 auf 480x800 ab 24.10.2026 migriert).
+- Der MCP-Spec-Browser (`playwright-mcp.config.json`) verwendet dieselbe mobile Auflösung `480x800`, damit die Spec-Erstellung live exakt dem generierten Test entspricht.
 
 ## Timeouts
 

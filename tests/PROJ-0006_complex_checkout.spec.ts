@@ -3,7 +3,7 @@ import { test, expect } from '../fixtures/spec-annotation';
 test.describe('PROJ-0006: Juice Shop Complex Checkout Flow', () => {
   test.setTimeout(120000);
 
-  test.use({ viewport: { width: 390, height: 844 } });
+  test.use({ viewport: { width: 480, height: 800 } });
 
   test('Complete a large order and verify detailed order confirmation @regression @mobile', async ({ page }) => {
     const uniqueEmail = `user_proj0006_${Date.now()}@example.com`;
