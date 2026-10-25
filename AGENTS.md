@@ -90,6 +90,7 @@ Without a clear spec, no test is generated.
   3. `page.getByText()` / `:has-text()` / `filter()`
   4. Stable IDs
   5. Semantic selectors with context
+- Regeneration instead of repair (hard rule): whenever a spec changes, a test fails, or a user asks to fix, adjust, or "make the test pass" — never edit the existing test file. Replace the whole file with a clean regeneration from the current spec and `learnings.md`. Rationalizations such as "only a small change", "the unaffected steps stay", or "the test still passes" are exactly what this rule forbids. Detailed trigger list and procedure: `playbook/skills/generate-playwright-test-from-spec/SKILL.md`.
 
 ## Test execution in the visible browser (mandatory)
 

@@ -1,6 +1,6 @@
 ---
 name: generate-playwright-test-from-spec
-description: Use when creating or updating a Playwright E2E test from an approved Markdown spec
+description: Use when creating, updating, fixing, repairing, or adjusting a Playwright E2E test - covering test failures, spec changes, and user requests such as "fix the test", "make it pass", or "adapt the test to the spec". The existing test file is always replaced by a complete regeneration, never edited in place.
 ---
 
 # Generate Playwright Test From Spec
@@ -15,6 +15,29 @@ Generate Playwright tests only from reviewed Markdown specs. The core principle:
 - `learnings.md` has been read.
 - The project test fixture, test directory, and verification command are known.
 
+## Regeneration-Only Rule (MUST)
+
+An existing generated test file is **never** edited by hand. Whatever the trigger, the final state is a complete regeneration from the current spec and `learnings.md`. The triggers cover exactly these situations:
+
+| Trigger | Action |
+|---------|--------|
+| User asks to fix, repair, adjust, or make a test pass (e.g. "fix the test", "Fehler beseitigen", "passe den Test an") | Complete regeneration |
+| Test failure | Debug first (see `debug-playwright-test-failure`), then complete regeneration |
+| Spec change - even a single step | Blocking spec review first (see `review-markdown-spec`), then complete regeneration |
+| Step comments no longer quote the current spec verbatim | Complete regeneration |
+
+Mandatory sequence: diagnose, record the insight in `learnings.md`, then overwrite the whole test file from the current spec, then re-run. While diagnosing a failure, clearly marked temporary debug statements are permitted; they are removed before regeneration. Every statement of the regenerated test traces back to the current spec or a documented learning.
+
+Forbidden rationalizations - if you notice one of these appearing while reasoning about the change, you are about to violate this rule:
+
+| Rationalization | Verdict |
+|-----------------|---------|
+| "It's only a minimal / one-line change" | Repair. A one-line edit turns the file into a hand-edited mix; regenerate. |
+| "The unaffected steps stay as they are" | There is no unaffected remainder. The file is one unit; replacing only part of it is impossible. |
+| "The test itself still passes" | It passes against the outdated expectation and is stale after a spec change; regenerate. |
+| "The user explicitly asked to fix the test" | The request means: bring the test back in sync - the path is a regeneration, communicated to the user as such upfront. |
+| "The spec only changed at the end" | Location and size of the spec change do not matter; the regeneration covers the full file. |
+
 ## Generation Rules
 
 | Area | Rule |
@@ -28,26 +51,6 @@ Generate Playwright tests only from reviewed Markdown specs. The core principle:
 | Parametrization | Generate one independent test per Markdown table row unless the project says otherwise |
 | Viewport | Apply `mobile` or other viewport tags according to project convention |
 | Learnings | Record new reusable app knowledge in `learnings.md` |
-
-## Binding Rule on Failure (MUST)
-
-When a test generated under this skill fails, this sequence is mandatory — no exceptions:
-
-1. Use the existing failing test **only** to isolate the root cause (see `debug-playwright-test-failure`).
-2. Record the reusable insight in `learnings.md` **before** regenerating.
-3. Replace the test file with a **complete regeneration** from the approved spec and `learnings.md`.
-4. Every statement in the regenerated test must trace back to the spec or a documented learning.
-5. Re-run the regenerated test; iterate in the same way until it passes or a blocker is documented.
-
-Prohibited by this rule: any hand edit that makes a failing test pass — including minimal fixes, selector swaps, or "restoring the previous state". That is a repair, not a regeneration, even when the diff is one line. The only permitted edits are clearly marked, temporary debug statements that are removed before regeneration.
-
-## Binding Rule on Spec Changes (MUST)
-
-A spec edit invalidates its test, even if the test still passes — the step comments must quote the current spec verbatim, and after any spec change they no longer do. Therefore, before committing a changed spec:
-
-1. Discard the test and regenerate it completely from the updated spec and `learnings.md`.
-2. The updated spec goes through the blocking spec review first (see `review-markdown-spec`).
-3. Re-run the regenerated test; the commit only contains spec and regenerated test together.
 
 ## Step Comments
 

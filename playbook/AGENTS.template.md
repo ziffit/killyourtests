@@ -69,6 +69,7 @@ An optional `## Testdaten` block before `## Scenario` parameterizes the spec.
 - No assertions against `page.locator('body')`.
 - Prefer user-facing selectors: role, test id, label, placeholder, visible text.
 - Use technical selectors only when they are stable and unambiguous.
+- Regeneration instead of repair: after a spec change, a test failure, or a user request to fix, adjust, or "make the test pass", the test file is never edited. It is completely regenerated from the current spec and `learnings.md` — even when the change looks minimal, the spec only changed at the end, or the test itself still passes.
 
 ## Test execution in the visible browser (mandatory)
 
