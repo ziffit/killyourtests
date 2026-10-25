@@ -96,3 +96,11 @@ Die "Continue"-Buttons heißen pro Seite unterschiedlich:
 - **Bekannte Limitation**: Manche Angular-Material-Buttons (z.B. `button.btn-next`) reagieren nicht auf Enter-Taste – sie brauchen `click()` (Accessibility-Bug in der App)
 - `.mat-search_icon-search` ist kein Button → öffnen per `click()` nötig, nicht per Enter
 - **Hidden Slide-Toggle im Register-Formular**: Zwischen `#repeatPasswordControl` und `mat-select` liegt ein versteckter Slide-Toggle → Tab muss 2x gedrückt werden
+
+## Passwort-Reset (PROJ-0010)
+
+- Sprache auf Deutsch: Sprachmenü → Zeile "Deutsch" anklicken (nicht das Radio) → Snackbar "Language has been changed to Deutsch" + Button "Force page reload" → Reload klicken; Deutsch bleibt danach erhalten.
+- Registrierungserfolg: Snackbar "Registrierung erfolgreich abgeschlossen. Du kannst dich jetzt anmelden.", danach wird automatisch `/#/login` geöffnet.
+- **"Passwort vergessen?"-Link ist überlappt**: Das Passwort-`mat-form-field` liegt über dem Link (auch bei 1280x720) → `click()` auf die Mitte schlägt mit "intercepts pointer events" fehl. Lösung: `click({ position: { x: 160, y: 19 } })` (unterer Rand) oder `force: true`.
+- Abmelden: Konto-Menü → "Abmelden"; danach landet man auf `/`. Der Menüpunkt hat aber den **Accessible Name "Logout"** (sichtbarer Text "Abmelden") → `getByRole('menuitem', { name: 'Logout' })`.
+- **Mobil** (480x800): Das Konto-Menü `button#navbarAccount` ist unsichtbar (`fxhide.lt-md`). Abmelden geht über den Hamburger "Open Sidenav" → `mat-sidenav` → Text "Abmelden". Das Warenkorb-Symbol bleibt in der Topbar sichtbar.
