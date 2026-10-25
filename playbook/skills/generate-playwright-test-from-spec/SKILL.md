@@ -29,6 +29,18 @@ Generate Playwright tests only from reviewed Markdown specs. The core principle:
 | Viewport | Apply `mobile` or other viewport tags according to project convention |
 | Learnings | Record new reusable app knowledge in `learnings.md` |
 
+## Binding Rule on Failure (MUST)
+
+When a test generated under this skill fails, this sequence is mandatory — no exceptions:
+
+1. Use the existing failing test **only** to isolate the root cause (see `debug-playwright-test-failure`).
+2. Record the reusable insight in `learnings.md` **before** regenerating.
+3. Replace the test file with a **complete regeneration** from the approved spec and `learnings.md`.
+4. Every statement in the regenerated test must trace back to the spec or a documented learning.
+5. Re-run the regenerated test; iterate in the same way until it passes or a blocker is documented.
+
+Prohibited by this rule: any hand edit that makes a failing test pass — including minimal fixes, selector swaps, or "restoring the previous state". That is a repair, not a regeneration, even when the diff is one line. The only permitted edits are clearly marked, temporary debug statements that are removed before regeneration.
+
 ## Step Comments
 
 Every step of the spec maps to exactly one comment block in the generated test. The comment carries the **entire step text verbatim**, so the test stays readable without opening the spec.
