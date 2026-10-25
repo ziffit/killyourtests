@@ -9,6 +9,7 @@ MarkupPlayRight generates Playwright tests from human-readable Markdown specific
 - `specs/*.spec.md` is the business source of truth.
 - `tests/*.spec.ts` is generated Playwright code and stays traceable to the spec.
 - `learnings.md` collects app-specific patterns, selectors, and pitfalls.
+- Learning entries are always general: no references to concrete specs or tests (IDs, file names, or test names).
 - `playbook/` contains the reusable core for other projects.
 
 ## Fundamental spec rules

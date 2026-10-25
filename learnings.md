@@ -2,6 +2,8 @@
 
 Vor dem Schreiben eines Tests konsultieren, nach erfolgreicher Verifikation ergänzen.
 
+Alle Einträge sind allgemein formuliert: keine Verweise auf konkrete Specs oder Tests (IDs, Dateinamen, Testnamen).
+
 ## Confirmation-Seite
 
 - `mat-card` ist mehrdeutig (4 Treffer) → mit `.filter()` / `.first()` eingrenzen
@@ -11,8 +13,8 @@ Vor dem Schreiben eines Tests konsultieren, nach erfolgreicher Verifikation erg�
 ## Assertions & Selektoren (ALLGEMEIN)
 
 - **`page.locator('body')` ist verboten** – immer einen spezifischen Container/Element-Selektor verwenden
-- Jede Assertion bekommt einen `// Schritt N: <voller Schritttext>`-Kommentar zur Rückverfolgbarkeit zur Spec – der komplette Step-Text, nicht nur die Nummer
-- Bei nicht eindeutigen Selektoren zuerst prüfen, ob die Spec präzisiert werden muss, bevor der Selektor "erzwungen" wird
+- Jede Assertion bekommt einen `// Schritt N: <voller Schritttext>`-Kommentar mit dem kompletten Step-Text, nicht nur der Nummer
+- Bei nicht eindeutigen Selektoren zuerst prüfen, ob die Anforderung präzisiert werden muss, bevor der Selektor "erzwungen" wird
 - `mat-radio-button` ohne `.first()`/`.filter()` ist mehrdeutig → immer eingrenzen
 
 ## Checkout-Buttons
@@ -61,7 +63,7 @@ Die "Continue"-Buttons heißen pro Seite unterschiedlich:
 
 ## Testdaten-Generierung
 
-- Zufällige Testdaten (z.B. Stadtname) werden inline via `pickRandom()`-Helper aus vorgegebenen Listen generiert, siehe `specs/PROJ-0006_complex_checkout.spec.md` "Testdata Generation"
+- Zufällige Testdaten (z.B. Stadtname) werden inline via `pickRandom()`-Helper aus vorgegebenen Listen generiert.
 
 ## MCP-Browser (Aufsicht bei der Spec-Erstellung)
 
@@ -76,14 +78,14 @@ Die "Continue"-Buttons heißen pro Seite unterschiedlich:
 - Tags werden als YAML-Frontmatter in Specs definiert: `tags: [regression, fast, desktop]`
 - Im Playwright-Test werden Tags an den Testnamen gehängt: `test('... @desktop @regression', ...)`
 - Selektion per CLI: `npx playwright test --grep @desktop` oder `--grep-invert @mobile`
-- Viewport-Konvention: Desktop-Tests nutzen `1280x720` (Default in playwright.config.ts). Mobile-Tests nutzen `480x800` per `test.use({ viewport: ... })` — gilt für mobile Specs/Tests (PROJ-0006 auf 480x800 ab 24.10.2026 migriert).
+- Viewport-Konvention: Desktop-Ansicht nutzt `1280x720` (Default in playwright.config.ts). Mobile Ansicht nutzt `480x800` per `test.use({ viewport: ... })`.
 - Der MCP-Spec-Browser (`playwright-mcp.config.json`) verwendet dieselbe mobile Auflösung `480x800`, damit die Spec-Erstellung live exakt dem generierten Test entspricht.
 
 ## Timeouts
 
 - Action-Timeout: 8000ms in `playwright.config.ts` → hängende Locators scheitern schnell statt das Test-Timeout aufzubrauchen. 1500–3000ms sind zu knapp: nach dem Schließen beider Banner blockiert das Overlay Klicks ~5s.
 - `slowMo` nur für den finalen Lauf (`npm run test:demo`, `SLOW_MO=250`); Entwicklung ohne `slowMo`
-- Checkout-Flows (PROJ-0005, PROJ-0006, PROJ-0007) und lange Flows (>15 Schritte) → `test.setTimeout(60000)` bis `180000` setzen
+- Lange Flows (>15 Schritte) → `test.setTimeout(60000)` bis `180000` setzen
 - Ohne explizites Timeout reicht das 30s-Default bei `slowMo`-Nutzung nicht aus
 
 - Snackbar schließen: `page.keyboard.press('Escape')` (Alternative zum X-Button-Klick)
@@ -97,8 +99,7 @@ Die "Continue"-Buttons heißen pro Seite unterschiedlich:
 - `.mat-search_icon-search` ist kein Button → öffnen per `click()` nötig, nicht per Enter
 - **Hidden Slide-Toggle im Register-Formular**: Zwischen `#repeatPasswordControl` und `mat-select` liegt ein versteckter Slide-Toggle → Tab muss 2x gedrückt werden
 
-## Passwort-Reset (PROJ-0010)
-
+## Passwort-Reset
 - Sprache auf Deutsch: Sprachmenü → Zeile "Deutsch" anklicken (nicht das Radio) → Snackbar "Language has been changed to Deutsch" + Button "Force page reload" → Reload klicken; Deutsch bleibt danach erhalten.
 - Registrierungserfolg: Snackbar "Registrierung erfolgreich abgeschlossen. Du kannst dich jetzt anmelden.", danach wird automatisch `/#/login` geöffnet.
 - **"Passwort vergessen?"-Link ist überlappt**: Das Passwort-`mat-form-field` liegt über dem Link (auch bei 1280x720) → `click()` auf die Mitte schlägt mit "intercepts pointer events" fehl. Lösung: `click({ position: { x: 160, y: 19 } })` (unterer Rand) oder `force: true`.
