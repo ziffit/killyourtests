@@ -73,9 +73,11 @@ An optional `## Testdaten` block before `## Scenario` parameterizes the spec.
 
 ## Test execution in the visible browser (mandatory)
 
-Generated tests are always run in the visible (headed) browser and with `slowMo` so the user can follow the run live.
+Generated tests are always run in the visible (headed) browser. `slowMo` is used only for the final run so the user can follow it live.
 
-- Always use `--headed` together with `SLOW_MO`/slowMo, never headless.
+- Development runs: `--headed` without `slowMo`.
+- Final run: `--headed` with `SLOW_MO` (e.g. 250).
+- Never run headless while the user is watching.
 - On failure, repeat the run visibly and evaluate the trace, screenshot, and error message.
 
 ## Failure handling

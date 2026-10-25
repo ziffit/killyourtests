@@ -94,10 +94,11 @@ Without a clear spec, no test is generated.
 
 ## Test execution in the visible browser (mandatory)
 
-Generated tests are always run in the visible (headed) browser and with `slowMo` so the user can follow the run live.
+Generated tests are always run in the visible (headed) browser. `slowMo` is used only for the final run so the user can follow it live; development runs go without it.
 
-- Standard command: `npm run test:demo` (sets `SLOW_MO=800` and `--headed`).
-- Single test, visible: `SLOW_MO=800 npx playwright test tests/<file>.spec.ts --headed`.
+- Final run: `npm run test:demo` (sets `SLOW_MO=250` and `--headed`).
+- Development run, visible: `npx playwright test tests/<file>.spec.ts --headed`.
+- Locator/action timeout is 8000ms (`playwright.config.ts`) so development failures surface fast. 1.5–3s breaks existing tests: after closing both banners the overlay blocks clicks for ~5s.
 - Do not run headless while the user is watching.
 - On failure, repeat the run visibly and evaluate the trace, screenshot, and error message.
 

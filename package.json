@@ -6,7 +6,7 @@
     "setup": "playwright install chromium && docker compose up -d && git config core.hooksPath hooks",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "test:demo": "cross-env SLOW_MO=800 playwright test --headed"
+    "test:demo": "cross-env SLOW_MO=250 playwright test --headed"
   },
   "keywords": [],
   "author": "Felix Tensing, felix-spricht.de",
