@@ -1,17 +1,17 @@
 ---
 name: review-markdown-spec
-description: Use when a Markdown E2E spec should be checked before generating or changing a Playwright test
+description: Use when a Markdown E2E spec should be checked before generating or changing a Playwright test, or when a test description in natural language must be turned into a spec
 ---
 
 # Review Markdown Spec
 
 ## Overview
 
-Review the Markdown spec as the source of truth before any test generation. The core principle: unclear specs create brittle tests, so ambiguity is blocked before code exists.
+Review the Markdown spec as the source of truth before any test generation. The input may be an existing spec or a test description in natural language. Natural-language input is first transposed into the spec format (steps, test data, tags) — every step verified live in the visible browser per the project rules in `AGENTS.md` — and then reviewed as usual. The core principle: unclear specs create brittle tests, so ambiguity is blocked before code exists.
 
 ## Review Contract
 
-Read `learnings.md`, then inspect the target spec. Do not generate or edit Playwright code during this review.
+Read `learnings.md`, then inspect the target spec. If the input is natural language, first transpose it into a `specs/*.spec.md` file following project convention, and ask for missing concrete test data before writing any placeholder. Do not generate or edit Playwright code during this review.
 
 | Check | Required outcome |
 |-------|------------------|
