@@ -7,20 +7,20 @@ description: Use before committing changed or new Markdown specs to verify test-
 
 ## Overview
 
-Pruefe alle geaenderten oder neuen Specs vor dem Commit auf Test-Pyramide, Deduplizierung und Konsolidierung. Das Kernprinzip: jede Zeile in einer Spec muss eindeutigen fachlichen Wert liefern, und kein Test darf einen bereits abgedeckten Bereich nochmals testen.
+Check all changed or new specs before every commit for test-pyramid compliance, deduplication, and consolidation. The core principle: every line in a spec must deliver clear business value, and no test may re-test an area already covered by another test.
 
 ## Preconditions
 
-- Alle geaenderten/neuen `.spec.md`-Dateien sind bekannt (z.B. via `git diff --cached --name-only`).
-- Alle bestehenden Specs werden fuer den Vergleich gelesen, nicht nur die geaenderten.
+- All changed/new `.spec.md` files are known (e.g. via `git diff --cached --name-only`).
+- All existing specs are read for comparison, not only the changed ones.
 
 ## Checks
 
-| # | Bereich | Was wird geprueft |
-|---|---------|-------------------|
-| 1 | **Test-Pyramide / Business Value** | Testdaten-Tabellen pruefen: testen die Zeilen wirklich unterschiedliche Fachlichkeit? Grenzwerttests (leer, null, 1, 999999) nur mit expliziter Begrueundung in der Spec. Identisches Verhalten mit anderen Parametern = Konsolidierung nötig. |
-| 2 | **Inhaltlich aehnliche Tests** | Alle Specs miteinander vergleichen. Gleicher Bereich + aehnliche/gleiche Assertions = Flag. Steps duerfen abweichen, wenn das Ergebnis (Assertion) gleich ist. Auch bei unterschiedlicher Nomenklatur erkennen (z.B. "Warenkorb" vs. "Basket"). |
-| 3 | **Konsolidierungspotenzial** | Setup-Aehnlichkeiten erkennen (z.B. "Produkt zum Warenkorb hinzufuegen" in mehreren Specs). Vorschlag: Welche Tests koennten nach gemeinsamem Setup mehrere Verifikationen durchfuehren? Kosten-Nutzen: Zusammenlegung vs. separate Lesbarkeit. |
+| # | Area | What is checked |
+|---|------|-----------------|
+| 1 | **Test pyramid / business value** | Check test-data tables: do the rows really cover distinct business content? Boundary-value tests (empty, null, 1, 999999) only with explicit rationale in the spec. Identical behavior with different parameters = consolidation required. |
+| 2 | **Content-similar tests** | Compare all specs against each other. Same area + similar/identical assertions = flag. Steps may differ if the result (assertion) is the same. Recognize similarity even when the wording differs (e.g. "shopping cart" vs. "basket"). |
+| 3 | **Consolidation potential** | Detect setup similarities (e.g. "add product to cart" in several specs). Proposal: which tests could perform several verifications after shared setup? Cost-benefit: merging vs. separate readability. |
 
 ## Response Shape
 
@@ -34,28 +34,28 @@ For `FINDINGS`, structure the report as:
 ```
 ## FINDINGS
 
-### [Severity: high|medium|low] Kurzbeschreibung
+### [Severity: high|medium|low] Short description
 
-- **Bereich:** [Test-Pyramide|Deduplizierung|Konsolidierung]
-- **Dateien:** [Dateiname:Zeile, Dateiname:Zeile]
-- **Problem:** [Konkrete Beschreibung]
-- **Vorschlag:** [Was geaendert werden sollte]
+- **Area:** [Test pyramid|Deduplication|Consolidation]
+- **Files:** [filename:line, filename:line]
+- **Problem:** [Concrete description]
+- **Proposal:** [What should be changed]
 ```
 
-Severity-Leiste:
+Severity ladder:
 
-| Severity | Wann |
+| Severity | When |
 |----------|------|
-| `high` | Identische Tests, die fachlich dasselbe abdecken |
-| `medium` | Testdaten-Tabellen ohne fachliche Differenzierung |
-| `low` | Konsolidierungsvorschlaege mit guetingem Kosten-Nutzen-Verhaeltnis |
+| `high` | Identical tests that cover the same business content |
+| `medium` | Test-data tables without business differentiation |
+| `low` | Consolidation proposals with reasonable cost-benefit ratio |
 
 ## Common Mistakes
 
 | Mistake | Fix |
 |---------|-----|
-| Nur die geaenderte Spec pruefen, nicht alle | Immer alle Specs fuer Vergleich lesen |
-| Steps als Kriterium fuer Identitaet nehmen | Assertion-Ergebnis ist das Kriterium, nicht Steps |
-| Konsolidierung vorschlagen ohne Lesbarkeitsverlust zu pruefen | Bei Konsolidierung: Lesbarkeit und Wartbarkeit abwaegen |
-| Grenzwerttests pauschal flaggen | Nur flaggen wenn keine Begrueundung in der Spec steht |
-| Testdaten-Tabellen mit 2 Zeilen automatisch flaggen | Pruefen ob die 2 Zeilen wirklich unterschiedliche Fachlichkeit testen |
+| Checking only the changed spec, not all of them | Always read all specs for comparison |
+| Using steps as the criterion for identity | The assertion result is the criterion, not the steps |
+| Proposing consolidation without checking readability loss | When consolidating, weigh readability and maintainability |
+| Flagging boundary-value tests indiscriminately | Only flag if no rationale is stated in the spec |
+| Automatically flagging test-data tables with 2 rows | Check whether the 2 rows really test distinct business content |
