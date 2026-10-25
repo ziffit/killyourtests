@@ -73,3 +73,4 @@ Run the smallest test command that covers the generated test. The task is comple
 | Using broad assertions | Target the smallest stable element that proves the expectation |
 | Hiding flaky behavior with arbitrary waits | Prefer observable conditions and document verified app quirks |
 | Truncated or shortened step comments | Quote the complete step text from the spec, only the step number is not enough |
+| Repairing an old failing test by hand | Debugging classifies the cause, then regeneration from spec and learnings produces the clean test (see `debug-playwright-test-failure`) |

@@ -7,7 +7,7 @@ description: Use when a Playwright E2E test generated from a Markdown spec fails
 
 ## Overview
 
-Debug failures by identifying the true source before editing. The core principle: fix the spec when the expectation is unclear, fix the test when the implementation is wrong, and document reusable app knowledge.
+Debug failures by identifying the true source before editing. The core principle: fix the spec when the expectation is unclear, regenerate the test from spec and learnings when the implementation is wrong, and document reusable app knowledge.
 
 ## Required Loop
 
@@ -15,15 +15,15 @@ Debug failures by identifying the true source before editing. The core principle
 2. Inspect the error, trace, screenshot, video, and relevant spec step.
 3. Classify the cause as `SPEC`, `TEST_CODE`, `APP_UNDER_TEST`, or `ENVIRONMENT`.
 4. Apply the matching action.
-5. Re-run the same test.
+5. Re-run the same test case.
 6. Repeat until the test passes or the blocker is explicit.
 
 ## Cause Actions
 
 | Cause | Action |
 |-------|--------|
-| `SPEC` | Clarify or correct the Markdown spec before changing test code |
-| `TEST_CODE` | Fix selectors, waits, assertions, or flow logic |
+| `SPEC` | Clarify or correct the Markdown spec before regenerating the test |
+| `TEST_CODE` | Debug the existing test only to isolate and document the root cause; after diagnosis, discard it and regenerate a clean test from the approved spec and `learnings.md` — never patch it incrementally |
 | `APP_UNDER_TEST` | Report the app defect; do not mask it in the test |
 | `ENVIRONMENT` | Document the missing service, dependency, or configuration |
 
@@ -39,11 +39,14 @@ Update `learnings.md` when the fix reveals a reusable pattern:
 
 Do not add one-off observations that future tests cannot reuse.
 
+Record learnings **before regenerating**, so the fresh test already includes the new knowledge.
+
 ## Common Mistakes
 
 | Mistake | Fix |
 |---------|-----|
 | Editing selectors before reading the spec | Compare the failure to the spec step first |
+| Patching a failing test piece by piece | The existing test is the diagnostic instrument; the fix is a clean regeneration from spec and learnings |
 | Treating every failure as flakiness | Reproduce and classify the cause |
 | Swallowing errors with broad retries or catches | Wait for observable conditions or fix the root cause |
 | Forgetting learnings | Capture reusable findings immediately after verification |
