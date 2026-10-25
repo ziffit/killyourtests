@@ -41,6 +41,14 @@ When a test generated under this skill fails, this sequence is mandatory — no 
 
 Prohibited by this rule: any hand edit that makes a failing test pass — including minimal fixes, selector swaps, or "restoring the previous state". That is a repair, not a regeneration, even when the diff is one line. The only permitted edits are clearly marked, temporary debug statements that are removed before regeneration.
 
+## Binding Rule on Spec Changes (MUST)
+
+A spec edit invalidates its test, even if the test still passes — the step comments must quote the current spec verbatim, and after any spec change they no longer do. Therefore, before committing a changed spec:
+
+1. Discard the test and regenerate it completely from the updated spec and `learnings.md`.
+2. The updated spec goes through the blocking spec review first (see `review-markdown-spec`).
+3. Re-run the regenerated test; the commit only contains spec and regenerated test together.
+
 ## Step Comments
 
 Every step of the spec maps to exactly one comment block in the generated test. The comment carries the **entire step text verbatim**, so the test stays readable without opening the spec.
