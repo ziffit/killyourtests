@@ -4,6 +4,8 @@ This document contains project-specific insights for generating and stabilizing 
 
 Read it before writing a test. Update it after successful debugging or new UI insights.
 
+All entries are general: no references to concrete specs or tests (IDs, file names, or test names).
+
 ## Test-ready pages
 
 Describe here what "Go to the test-ready {page}" means for each relevant page.

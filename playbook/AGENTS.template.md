@@ -9,6 +9,7 @@ This project uses human-readable Markdown specifications as the source of truth 
 - Specs live in `specs/*.spec.md`.
 - Generated tests live in `tests/*.spec.ts`.
 - Project knowledge, selector decisions, and known pitfalls are documented in `learnings.md`.
+- Learning entries are always general: no references to concrete specs or tests (IDs, file names, or test names).
 - Specs describe user behavior, not technical implementation details.
 
 ## Mandatory workflow

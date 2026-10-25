@@ -45,7 +45,7 @@ Add only rules to `AGENTS.md` that apply to all tests in the target project:
 - Which tags or viewports are mandatory.
 - Which files agents must not modify.
 
-App-specific UI insights do not belong in `AGENTS.md`; they belong in `learnings.md`.
+App-specific UI insights do not belong in `AGENTS.md`; they belong in `learnings.md`. Learning entries are always general: no references to concrete specs or tests (IDs, file names, or test names).
 
 ## Step 3: Define the first test-ready page
 
