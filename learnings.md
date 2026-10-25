@@ -81,7 +81,9 @@ Die "Continue"-Buttons heißen pro Seite unterschiedlich:
 
 ## Timeouts
 
-- Checkout-Flows (PROJ-0005, PROJ-0006, PROJ-0007) sind lang (>15 Schritte) → `test.setTimeout(120000)` setzen
+- Action-Timeout: 8000ms in `playwright.config.ts` → hängende Locators scheitern schnell statt das Test-Timeout aufzubrauchen. 1500–3000ms sind zu knapp: nach dem Schließen beider Banner blockiert das Overlay Klicks ~5s.
+- `slowMo` nur für den finalen Lauf (`npm run test:demo`, `SLOW_MO=250`); Entwicklung ohne `slowMo`
+- Checkout-Flows (PROJ-0005, PROJ-0006, PROJ-0007) und lange Flows (>15 Schritte) → `test.setTimeout(60000)` bis `180000` setzen
 - Ohne explizites Timeout reicht das 30s-Default bei `slowMo`-Nutzung nicht aus
 
 - Snackbar schließen: `page.keyboard.press('Escape')` (Alternative zum X-Button-Klick)
