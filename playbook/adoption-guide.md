@@ -1,10 +1,10 @@
-# Adoption Guide: Markdown-First-E2E-Testing
+# Adoption Guide: Markdown-First E2E Testing
 
-Dieser Guide beschreibt, wie du das Vorgehen aus diesem Beispielprojekt in ein neues Projekt uebernimmst.
+This guide describes how to adopt the approach from this example project in a new project.
 
-## Zielbild
+## Target state
 
-Das Zielprojekt hat eine klare Trennung zwischen fachlicher Spec, generiertem Test-Code und wachsendem Projektwissen:
+The target project has a clear separation between the business spec, the generated test code, and growing project knowledge:
 
 ```text
 AGENTS.md
@@ -14,7 +14,7 @@ tests/
 fixtures/
 ```
 
-Optional kommen wiederverwendbare Skills hinzu:
+Optionally, reusable skills are added:
 
 ```text
 skills/
@@ -24,50 +24,50 @@ skills/
   testmanager/
 ```
 
-## Schritt 1: Playbook-Dateien kopieren
+## Step 1: Copy the playbook files
 
-Kopiere aus diesem Repository:
+Copy from this repository:
 
-- `playbook/AGENTS.template.md` nach `AGENTS.md`
-- `playbook/learnings.template.md` nach `learnings.md`
-- `playbook/skills/` in dein Skill-Verzeichnis oder in eine dokumentierte Projektablage
+- `playbook/AGENTS.template.md` to `AGENTS.md`
+- `playbook/learnings.template.md` to `learnings.md`
+- `playbook/skills/` into your skill directory or a documented project location
 
-Passe danach alle Pfade, Testbefehle und Projektnamen an dein Zielprojekt an.
+Then adapt all paths, test commands, and project names to your target project.
 
-## Schritt 2: Projektregeln anpassen
+## Step 2: Adapt the project rules
 
-Ergaenze in `AGENTS.md` nur Regeln, die fuer alle Tests des Zielprojekts gelten:
+Add only rules to `AGENTS.md` that apply to all tests in the target project:
 
-- Wo Specs liegen.
-- Wo Tests liegen.
-- Welche Fixture oder Testbasis genutzt wird.
-- Welche Befehle Tests ausfuehren.
-- Welche Tags oder Viewports verpflichtend sind.
-- Welche Dateien Agenten nicht veraendern sollen.
+- Where specs live.
+- Where tests live.
+- Which fixture or test base is used.
+- Which commands execute tests.
+- Which tags or viewports are mandatory.
+- Which files agents must not modify.
 
-App-spezifische UI-Erkenntnisse gehoeren nicht in `AGENTS.md`, sondern in `learnings.md`.
+App-specific UI insights do not belong in `AGENTS.md`; they belong in `learnings.md`.
 
-## Schritt 3: Erste testbereite Seite definieren
+## Step 3: Define the first test-ready page
 
-Lege in `learnings.md` fest, wie eine Seite testbereit gemacht wird.
+In `learnings.md`, define how a page is made test-ready.
 
-Beispiel:
-
-```markdown
-| Seite | URL | Vorbereitung |
-|-------|-----|--------------|
-| Login | `/login` | Seite oeffnen, Cookie-Banner schliessen |
-```
-
-Nutze danach in Specs die Formulierung:
+Example:
 
 ```markdown
-1. Gehe zur testbereiten Login-Seite (`/login`)
+| Page  | URL     | Preparation                        |
+|-------|---------|------------------------------------|
+| Login | `/login` | Open the page, close the cookie banner |
 ```
 
-## Schritt 4: Erste Spec schreiben
+Then use this phrasing in specs:
 
-Starte mit einem kleinen, stabilen Nutzerfluss.
+```markdown
+1. Go to the test-ready login page (`/login`)
+```
+
+## Step 4: Write the first spec
+
+Start with a small, stable user flow.
 
 ```markdown
 ---
@@ -76,59 +76,59 @@ tags: [smoke, desktop]
 
 # Login
 
-## Scenario: Erfolgreicher Login
+## Scenario: Successful login
 
-1. Gehe zur testbereiten Login-Seite (`/login`)
-2. Gib die E-Mail-Adresse "test@example.com" und das Passwort "password" ein
-3. Klicke auf den Login-Button
-4. Verifiziere dass der Benutzername in der Navigation angezeigt wird
+1. Go to the test-ready login page (`/login`)
+2. Enter the email address "test@example.com" and the password "password"
+3. Click the login button
+4. Verify that the username is displayed in the navigation
 ```
 
-Die Spec beschreibt fachliches Verhalten. Technische Selektoren gehoeren erst in den generierten Playwright-Test.
+The spec describes business behavior. Technical selectors belong in the generated Playwright test only.
 
-## Schritt 5: Spec reviewen lassen
+## Step 5: Have the spec reviewed
 
-Nutze den Skill `review-markdown-spec`, bevor ein Test generiert wird.
+Use the `review-markdown-spec` skill before a test is generated.
 
-Der Review ist blockierend. Wenn die Spec mehrdeutig ist, wird sie zuerst verbessert.
+The review is blocking. If the spec is ambiguous, it is improved first.
 
-## Schritt 6: Test generieren und ausfuehren
+## Step 6: Generate and run the test
 
-Nutze den Skill `generate-playwright-test-from-spec`.
+Use the `generate-playwright-test-from-spec` skill.
 
-Der generierte Test muss:
+The generated test must:
 
-- auf die Spec rueckverfolgbar sein,
-- konkrete Assertions enthalten,
-- ohne `page.locator('body')` auskommen,
-- mit dem projektspezifischen Testbefehl erfolgreich laufen.
+- stay traceable to the spec,
+- contain concrete assertions,
+- work without `page.locator('body')`,
+- pass with the project-specific test command.
 
-## Schritt 7: Fehler systematisch beheben
+## Step 7: Fix failures systematically
 
-Wenn der Test fehlschlaegt, nutze `debug-playwright-test-failure`.
+If the test fails, use `debug-playwright-test-failure`.
 
-Entscheide immer zuerst, ob die Ursache in der Spec, im Test-Code oder in der Testumgebung liegt. Neue wiederverwendbare Erkenntnisse werden in `learnings.md` dokumentiert.
+Always decide first whether the cause lies in the spec, the test code, or the test environment. If the test code is wrong, use the existing test only for root-cause analysis; afterwards regenerate it from the spec and `learnings.md` instead of repairing it. New reusable insights are documented in `learnings.md`.
 
-## Schritt 8: Vorgehen stabilisieren
+## Step 8: Stabilize the approach
 
-Nach den ersten drei bis fuenf Tests pruefe:
+After the first three to five tests, check:
 
-- Sind die Spec-Regeln klar genug?
-- Wiederholen sich Learnings, die in Fixtures gehoeren?
-- Sind Testdaten ausreichend explizit?
-- Sind Tags und Viewports konsistent?
-- Sind die Skills fuer das Team auffindbar?
+- Are the spec rules clear enough?
+- Do learnings repeat that belong in fixtures?
+- Is the test data explicit enough?
+- Are tags and viewports consistent?
+- Are the skills discoverable for the team?
 
-Passe erst danach groessere Teile des Playbooks an.
+Only then adapt larger parts of the playbook.
 
-## Was nicht kopiert werden sollte
+## What should not be copied
 
-Aus diesem Beispielprojekt nicht ungeprueft uebernehmen:
+Do not adopt these from this example project without review:
 
-- Juice-Shop-spezifische Selektoren.
-- Testnutzer oder Testdaten.
-- Docker-Setup.
-- App-spezifische Banner-Logik.
-- Spezifische Checkout- oder Warenkorb-Flows.
+- Juice Shop-specific selectors.
+- Test users or test data.
+- The Docker setup.
+- App-specific banner logic.
+- Specific checkout or cart flows.
 
-Diese Details gehoeren immer in die jeweilige Projektinstanz.
+These details always belong to the respective project instance.

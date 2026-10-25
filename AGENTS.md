@@ -1,133 +1,136 @@
 # Agent Instructions
 
-Diese Datei beschreibt die verbindlichen Projektregeln fuer KI-Agenten und Menschen, die in diesem Repository am Markdown-First-E2E-Testing arbeiten.
+This file defines the binding project rules for AI agents and humans working on Markdown-First E2E testing in this repository.
 
-## Projektkontext
+## Project context
 
-MarkupPlayRight erzeugt Playwright-Tests aus menschenlesbaren Markdown-Spezifikationen.
+MarkupPlayRight generates Playwright tests from human-readable Markdown specifications.
 
-- `specs/*.spec.md` ist die fachliche Source of Truth.
-- `tests/*.spec.ts` ist generierter Playwright-Code und bleibt zur Spec rueckverfolgbar.
-- `learnings.md` sammelt app-spezifische Patterns, Selektoren und Fallstricke.
-- `playbook/` enthaelt den wiederverwendbaren Kern fuer andere Projekte.
+- `specs/*.spec.md` is the business source of truth.
+- `tests/*.spec.ts` is generated Playwright code and stays traceable to the spec.
+- `learnings.md` collects app-specific patterns, selectors, and pitfalls.
+- `playbook/` contains the reusable core for other projects.
 
-## Grundregeln fuer Specs
+## Fundamental spec rules
 
-Specs werden wie Navigationsanweisungen fuer menschliche Tester geschrieben.
+Specs are written like navigation instructions for human testers.
 
-- Schreibe Schritte imperativ: "Klicke auf ...", "Navigiere zu ...", "Gib ... ein".
-- Verwende keine technischen Selektoren in Specs: keine CSS-Klassen, IDs oder `aria-label`.
-- Beschreibe UI-Elemente ueber Kontext, Position, sichtbaren Text und Zweck.
-- Jede Zeile enthaelt genau einen logischen Schritt aus Benutzersicht.
-- Trenne Aktion und Verifikation strikt in separate Schritte.
-- Verifikationen beschreiben die konkrete Erwartung: was sichtbar ist und wo.
-- Testdaten muessen explizit sein; keine Platzhalter wie "valide Adresse".
-- Jede Spec braucht mindestens einen Viewport-Tag: `desktop` oder `mobile`.
+- Write steps in the imperative: "Click on ...", "Navigate to ...", "Enter ...".
+- Do not use technical selectors in specs: no CSS classes, IDs, or `aria-label`.
+- Describe UI elements by context, position, visible text, and purpose.
+- Each line contains exactly one logical user-level step.
+- Strictly separate action and verification into distinct steps.
+- Verifications state the concrete expectation: what is visible and where.
+- Test data must be explicit; no placeholders such as "valid address".
+- Every spec needs at least one viewport tag: `desktop` or `mobile`.
 
-## Spec-Erstellung im Browser (Pflicht)
+## Spec creation in the browser (mandatory)
 
-Jede Spec wird interaktiv im sichtbaren (headed) Browser des Playwright-MCP-Servers erarbeitet, damit der Anwender jeden Schritt live mitverfolgen kann.
+Every spec is developed interactively in the visible (headed) browser of the Playwright MCP server so the user can follow every step live.
 
-- Vor dem ersten Schritt einer neuen Spec den Browser per `browser_navigate` oeffnen und waehrend der gesamten Spec-Erstellung sichtbar lassen. Browser nicht headless betreiben, nicht schliessen und nicht in den Hintergrund schieben.
-- Jeden Spec-Schritt vor dem Aufschreiben real in der App durchklicken.
-- Alle Texte (Erfolgs- und Fehlermeldungen, Button-Labels, Links) aus der laufenden App ablesen. Nicht aus Quellcode, i18n-Dateien oder Erfahrungswerten raten.
-- Den kompletten Flow einmal live durchlaufen und erst danach die Spec schreiben und speichern.
-- Ist die App nicht erreichbar oder nicht startbar: anhalten und den Anwender fragen, statt die Spec ohne Live-Verifikation zu schreiben.
-- Abweichende Beobachtungen aus dem Live-Durchlauf gehen in `learnings.md` ein.
+- Before the first step of a new spec, open the browser via `browser_navigate` and keep it visible for the entire spec creation. Do not run it headless, do not close it, and do not move it to the background.
+- Click through every spec step for real in the app before writing it down.
+- Read all texts (success and error messages, button labels, links) from the running app. Do not guess them from source code, i18n files, or prior experience.
+- Walk the complete flow live once, and only then write and save the spec.
+- If the app is unreachable or cannot be started: stop and ask the user instead of writing the spec without live verification.
+- Deviating observations from the live walkthrough go into `learnings.md`.
 
-## Testdaten-Tabellen
+## Test data tables
 
-Ein optionaler `## Testdaten`-Block vor `## Scenario` erzeugt einen Testfall pro Tabellenzeile.
+An optional `## Testdaten` block before `## Scenario` creates one test case per table row.
 
 ```markdown
 ## Testdaten
 
-| Suchbegriff | Sichtbar    |
-|-------------|-------------|
-| apple       | Apple Juice |
+| Query  | Visible     |
+|--------|-------------|
+| apple  | Apple Juice |
 
 ## Scenario: Search and verify results
 
-1. Gehe zur testbereiten Startseite (`/`)
-2. Suche nach "{Suchbegriff}"
-3. Verifiziere dass "{Sichtbar}" angezeigt wird
+1. Go to the test-ready start page (`/`)
+2. Search for "{Query}"
+3. Verify that "{Visible}" is displayed
 ```
 
-- Tabellenkopfzeilen sind Variablennamen.
-- `{Variable}` im Schritttext wird pro Tabellenzeile ersetzt.
-- Leere Werte sind nicht erlaubt; nutze fuer abweichende Faelle ein separates Scenario.
-- Pro Zeile entsteht ein eigener `test()`-Block, kein `test.each`.
+- Table header cells are variable names.
+- `{Variable}` in the step text is replaced per table row.
+- Empty values are not allowed; use a separate scenario for deviating cases.
+- Each row produces its own `test()` block, not `test.each`.
 
-## Spec-Review vor Testgenerierung
+## Spec review before test generation
 
-Vor jeder Testgenerierung muss die Spec blockierend geprueft werden.
+Before every test generation, the spec must pass a blocking review.
 
-| Problem | Reaktion |
+A spec may start from an existing Markdown file or from a test description in natural language. A natural-language description is first transposed into the spec format (steps, test data, tags) and verified live in the browser; the normal review applies afterwards.
+
+| Problem | Response |
 |---------|----------|
-| Aktion und Verifikation kombiniert | Trennung vorschlagen und klaeren |
-| Mikro-Steuerung einzelner Felder | Zu einem logischen Schritt zusammenfassen |
-| Zwei unzusammenhaengende Aktionen in einem Schritt | Trennung vorschlagen |
-| Vage Aktion | Nach Button, Ort, Text oder Zweck fragen |
-| Vage Verifikation | Nach konkretem Element, Text, Wert oder URL fragen |
-| Ungenaue Testdaten | Konkrete Werte erfragen |
-| Unklare Auswahl | Gewuenschte Option erfragen |
-| Mehrdeutige Beschreibung | Praezisierung oder Positionsangabe erfragen |
+| Action and verification combined | Propose a split and clarify |
+| Micro-management of individual fields | Merge into one logical step |
+| Two unrelated actions in one step | Propose a split |
+| Vague action | Ask for button, place, text, or purpose |
+| Vague verification | Ask for concrete element, text, value, or URL |
+| Imprecise test data | Ask for concrete values |
+| Unclear choice | Ask for the desired option |
+| Ambiguous description | Ask for precision or a position reference |
 
-Ohne klare Spec wird kein Test generiert.
+Without a clear spec, no test is generated.
 
-## Playwright-Testgenerierung
+## Playwright test generation
 
-- Vor dem Schreiben eines Tests `learnings.md` lesen.
-- Importiere `test` und `expect` aus `../fixtures/spec-annotation`, nicht direkt aus `@playwright/test`.
-- Das `specAttachment`-Autofixture haengt die Spec automatisch an den HTML-Report; kein manueller `attachSpec()`-Aufruf.
-- Jeder Assertion-Block bekommt einen `// Schritt N: <voller Schritttext>`-Kommentar passend zum Spec-Step, mit dem vollstaendigen Text des Steps aus der Spec.
-- `page.locator('body')` ist fuer Assertions nicht erlaubt.
-- Priorisiere Selektoren so:
+- Read `learnings.md` before writing a test.
+- Import `test` and `expect` from `../fixtures/spec-annotation`, not directly from `@playwright/test`.
+- The `specAttachment` auto-fixture attaches the spec to the HTML report automatically; no manual `attachSpec()` call.
+- Every assertion block gets a `// Schritt N: <full step text>` comment matching the spec step, with the complete step text from the spec.
+- `page.locator('body')` is not allowed for assertions.
+- Prioritize selectors as follows:
   1. `page.getByRole()` / `page.getByTestId()`
   2. `page.getByLabel()` / `page.getByPlaceholder()`
   3. `page.getByText()` / `:has-text()` / `filter()`
-  4. stabile IDs
-  5. semantische Selektoren mit Kontext
+  4. Stable IDs
+  5. Semantic selectors with context
 
-## Testausfuehrung im sichtbaren Browser (Pflicht)
+## Test execution in the visible browser (mandatory)
 
-Generierte Tests werden immer im sichtbaren (headed) Browser und mit `slowMo` ausgefuehrt, damit der Anwender den Ablauf live nachvollziehen kann.
+Generated tests are always run in the visible (headed) browser and with `slowMo` so the user can follow the run live.
 
-- Standardbefehl: `npm run test:demo` (setzt `SLOW_MO=800` und `--headed`).
-- Einzeltest sichtbar: `SLOW_MO=800 npx playwright test tests/<datei>.spec.ts --headed`.
-- Nicht headless ausfuehren, solange der Anwender zusieht.
-- Bei Fehlschlag den Lauf sichtbar wiederholen und Trace/Screenshot/Fehlermeldung auswerten.
+- Standard command: `npm run test:demo` (sets `SLOW_MO=800` and `--headed`).
+- Single test, visible: `SLOW_MO=800 npx playwright test tests/<file>.spec.ts --headed`.
+- Do not run headless while the user is watching.
+- On failure, repeat the run visibly and evaluate the trace, screenshot, and error message.
 
-## Fehlerbehebung
+## Failure handling
 
-Wenn ein Test fehlschlaegt:
+When a test fails:
 
-1. Fuehre den betroffenen Test aus und analysiere Fehlermeldung, Trace, Screenshot und Kontext.
-2. Entscheide, ob die Ursache in der Spec oder im Test-Code liegt.
-3. Bei unklarer oder falscher Spec: Spec praezisieren oder Anwender fragen.
-4. Bei Test-Code-Fehler: Test korrigieren und neue Erkenntnis in `learnings.md` sichern.
-5. Fuehre den korrigierten Test erneut aus.
-6. Iteriere, bis der Test erfolgreich ist oder ein externer Blocker dokumentiert ist.
+1. Run the affected test and analyze the error message, trace, screenshot, and context.
+2. Decide whether the cause lies in the spec or in the test code.
+3. If the spec is unclear or wrong: refine the spec or ask the user.
+4. If the test code is wrong: use the existing test only for root-cause analysis and record the insight in `learnings.md`.
+5. Regenerate the test cleanly from the spec and `learnings.md` instead of repairing the existing test.
+6. Run the regenerated test again.
+7. Iterate until the test passes or an external blocker is documented.
 
-## Pre-Commit-Regeln
+## Pre-commit rules
 
-Vor jedem Commit mit geaenderten oder neuen Specs den testmanager-Skill ausfuehren.
+Run the testmanager skill before every commit with changed or new specs.
 
-- `playbook/skills/testmanager/SKILL.md` prueft Test-Pyramide, Duplikate und Konsolidierung.
-- Der Pre-Commit-Hook liegt im Repo unter `hooks/pre-commit` und wird automatisch mit `npm run setup` aktiviert (`git config core.hooksPath hooks`).
-- Der Hook warnt, wenn `.spec.md`-Dateien im Commit sind; er blockiert nicht. Die tiefe Analyse uebernimmt der Skill.
+- `playbook/skills/testmanager/SKILL.md` checks test pyramid, duplicates, and consolidation.
+- The pre-commit hook lives in the repo under `hooks/pre-commit` and is activated automatically by `npm run setup` (`git config core.hooksPath hooks`).
+- The hook warns when `.spec.md` files are part of the commit; it does not block. The deep analysis is done by the skill.
 
-## Projekt-spezifische Konventionen
+## Project-specific conventions
 
-- "Gehe zur testbereiten {Seite}" bedeutet: Zur URL navigieren und stoerende Overlays wie Welcome-Banner oder Cookie-Consent schliessen.
-- Die konkrete Umsetzung dieser Konvention steht in `learnings.md`.
-- Checkout-Flows und andere lange Tests koennen ein erhoehtes Timeout benoetigen.
+- "Go to the test-ready {page}" (`Gehe zur testbereiten {Seite}` in German specs) means: navigate to the URL and close blocking overlays such as the welcome banner or cookie consent.
+- The concrete implementation of this convention is documented in `learnings.md`.
+- Checkout flows and other long tests may need an increased timeout.
 
-## Wiederverwendung in anderen Projekten
+## Reuse in other projects
 
-Nutze `playbook/`, wenn dieses Vorgehen in ein anderes Projekt uebernommen werden soll. Der Zielzustand ist:
+Use `playbook/` when adopting this approach in another project. The target state is:
 
-- generische Regeln aus `playbook/AGENTS.template.md` uebernehmen,
-- Skills aus `playbook/skills/` kopieren,
-- `playbook/learnings.template.md` als projektspezifische Wissensbasis starten,
-- App-spezifische Details nicht aus diesem Beispielprojekt uebernehmen.
+- adopt the generic rules from `playbook/AGENTS.template.md`,
+- copy the skills from `playbook/skills/`,
+- start from `playbook/learnings.template.md` as the project-specific knowledge base,
+- do not adopt app-specific details from this example project.

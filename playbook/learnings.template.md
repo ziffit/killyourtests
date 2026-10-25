@@ -1,50 +1,50 @@
-# Test-Learnings
+# Test Learnings
 
-Dieses Dokument enthaelt projektspezifische Erkenntnisse fuer die Generierung und Stabilisierung von E2E-Tests.
+This document contains project-specific insights for generating and stabilizing E2E tests.
 
-Vor dem Schreiben eines Tests lesen. Nach erfolgreichem Debugging oder neuen UI-Erkenntnissen aktualisieren.
+Read it before writing a test. Update it after successful debugging or new UI insights.
 
-## Testbereite Seiten
+## Test-ready pages
 
-Beschreibe hier, was "Gehe zur testbereiten {Seite}" fuer jede relevante Seite bedeutet.
+Describe here what "Go to the test-ready {page}" means for each relevant page.
 
-| Seite | URL | Vorbereitung |
-|-------|-----|--------------|
-| Startseite | `/` | Beispiel: Banner schliessen, Cookie-Consent bestaetigen |
+| Page     | URL | Preparation                                   |
+|----------|-----|-----------------------------------------------|
+| Homepage | `/` | Example: close the banner, confirm cookie consent |
 
-## Wiederverwendbare Flows
+## Reusable flows
 
-Dokumentiere stabile Sequenzen wie Login, Checkout, Registrierung oder Suche.
+Document stable sequences such as login, checkout, registration, or search.
 
-| Flow | Zweck | Hinweise |
-|------|-------|----------|
-| Login | Nutzer anmelden | Testnutzer, notwendige Wartebedingungen, bekannte Fehler |
+| Flow  | Purpose       | Notes                                              |
+|-------|---------------|----------------------------------------------------|
+| Login | Sign a user in | Test user, required wait conditions, known issues |
 
-## Selektoren und UI-Patterns
+## Selectors and UI patterns
 
-Halte nur Erkenntnisse fest, die bei kuenftigen Tests wiederverwendbar sind.
+Record only insights that are reusable in future tests.
 
-- Bevorzuge Rollen- und Textselektoren.
-- Dokumentiere mehrdeutige Elemente mit klarer Eingrenzung.
-- Notiere instabile IDs oder Komponenten, die nicht verwendet werden sollen.
+- Prefer role and text selectors.
+- Document ambiguous elements with clear scoping.
+- Note unstable IDs or components that should not be used.
 
 ## Assertions
 
-Dokumentiere spezifische Container oder Elemente fuer haeufige Verifikationen.
+Document specific containers or elements for frequent verifications.
 
-| Erwartung | Empfohlene Assertion | Grund |
-|-----------|----------------------|-------|
-| Beispieltext sichtbar | `await expect(locator).toContainText(...)` | Spezifischer Container statt gesamter Seite |
+| Expectation      | Recommended assertion                 | Reason                              |
+|------------------|---------------------------------------|-------------------------------------|
+| Example text visible | `await expect(locator).toContainText(...)` | Specific container instead of the whole page |
 
-## Testdaten
+## Test data
 
-Dokumentiere gueltige, wiederverwendbare Testdaten und Einschraenkungen.
+Document valid, reusable test data and constraints.
 
-| Bereich | Werte | Hinweise |
-|---------|-------|----------|
-| Adresse | Beispielwerte | Keine echten personenbezogenen Daten verwenden |
+| Area    | Values        | Notes                              |
+|---------|---------------|------------------------------------|
+| Address | Example values | Do not use real personal data      |
 
-## Bekannte Fallstricke
+## Known pitfalls
 
-- Beschreibe Flakiness-Ursachen, Timing-Fallen und UI-Komponenten mit Spezialverhalten.
-- Dokumentiere Workarounds nur, wenn sie verifiziert und wiederverwendbar sind.
+- Describe causes of flakiness, timing traps, and UI components with special behavior.
+- Document workarounds only when they are verified and reusable.
