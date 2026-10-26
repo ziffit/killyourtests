@@ -92,7 +92,9 @@ A spec may start from an existing Markdown file or from a test description in na
 | Two unrelated actions in one step | Propose a split |
 | Vague action | Ask for button, place, text, or purpose |
 | Vague verification | Ask for concrete element, text, value, or URL |
-| Imprecise test data | Ask for concrete values |
+| Imprecise test data | Ask for concrete values or an explicit generator rule; "a unique email" without the rule is a placeholder |
+| Step contradicts a documented app limitation | Propose the variant the app can actually do |
+| Verification target not locatable in the running app | Locate it live; if that fails, the step is too vague |
 | Unclear choice | Ask for the desired option |
 | Ambiguous description | Ask for precision or a position reference |
 

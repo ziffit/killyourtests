@@ -58,6 +58,10 @@ Die "Continue"-Buttons heißen pro Seite unterschiedlich:
 
 ## MCP-Refs
 
+- Vor einer Aktion den Zielknoten per `browser_find` (Text/Regex über den Accessibility-Tree, liefert Ref + Pfad-Kontext) orten — deutlich billiger als ein Voll-Snapshot und billiger als ein geratener Klick, der in den Timeout läuft.
+- Roh-HTML nicht parsen: der Accessibility-Tree ist die Projektion, gegen die Playwright-Locators auflösen; Roh-HTML bringt versteckte Nodes und Hydration-Duplikate mit. Für Fakten, die der Tree nicht trägt (Anzahl, `disabled`, `<mat-select>`-Optionen), `browser_evaluate` mit einem Ausdruck.
+- Braucht eine Aktion länger als ~1s, nicht weiter warten, sondern `browser_find`.
+
 - Die `aria-ref`s des MCP-Snapshots werden ungültig, sobald eine Snackbar erscheint bzw. die Seite navigiert/neu rendert → nach jeder Aktion neu `browser_snapshot`/`browser_find` und mit den aktuellen Refs arbeiten.
 - `mat-select` (Angular Material) unterstützt `browser_select_option` **nicht** ("Element is not a <select> element"). Option wählen per Klick auf den Combobox und dann die Option per Text-Selektor (`text=...`), nicht per `aria-ref`.
 
