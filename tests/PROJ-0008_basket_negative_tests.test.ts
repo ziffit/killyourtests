@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/spec-annotation';
 
-test.describe('PROJ-0008: Juice Shop Basket Negative Tests', () => {
+test.describe('Juice Shop Basket Negative Tests', () => {
   test.setTimeout(60000);
 
   test.use({ viewport: { width: 390, height: 844 } });

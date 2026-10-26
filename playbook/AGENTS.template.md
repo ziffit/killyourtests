@@ -7,7 +7,7 @@ This file defines the binding rules for Markdown-First E2E testing in this proje
 This project uses human-readable Markdown specifications as the source of truth for Playwright E2E tests.
 
 - Specs live in `specs/*.spec.md`.
-- Generated tests live in `tests/*.spec.ts`.
+- Generated tests live in `tests/*.test.ts`.
 - Project knowledge, selector decisions, and known pitfalls are documented in `learnings.md`.
 - Learning entries are always general: no references to concrete specs or tests (IDs, file names, or test names).
 - Specs describe user behavior, not technical implementation details.
@@ -40,6 +40,26 @@ Every spec is developed interactively in the visible (headed) browser of a brows
 - Verifications state concrete expectations.
 - Test data is explicit.
 - Every spec contains at least one viewport tag: `desktop` or `mobile`.
+
+## Spec ID and file naming
+
+Every spec owns exactly one unique ID. The ID lives in the YAML frontmatter and in the file name; the heading carries only the title.
+
+```markdown
+---
+id: PROJ-0001
+tags: [smoke, desktop]
+---
+
+# Login
+```
+
+- File names: `specs/<ID>_<slug>.spec.md` and `tests/<ID>_<slug>.test.ts`.
+- Spec and test file name are identical except for the extension.
+- Exactly one test file per spec. A spec without a test and a test without a spec are both invalid.
+- The `test.describe` title quotes the spec heading verbatim, without the ID.
+- IDs are assigned manually: no auto-increment, no counter script, no guessing. If the request names no ID, ask for it. If the existing schema is recognizable, propose the next free ID and wait for confirmation. A proposal is not an assignment - create or rename the file only after confirmation.
+- The ID never appears in the spec heading.
 
 ## Test data
 

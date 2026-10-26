@@ -71,6 +71,7 @@ Start with a small, stable user flow.
 
 ```markdown
 ---
+id: PROJ-0001
 tags: [smoke, desktop]
 ---
 
@@ -84,7 +85,7 @@ tags: [smoke, desktop]
 4. Verify that the username is displayed in the navigation
 ```
 
-The spec describes business behavior. Technical selectors belong in the generated Playwright test only.
+The spec describes business behavior. Technical selectors belong in the generated Playwright test only. The spec file name carries its ID (`specs/PROJ-0001_login.spec.md`), and the test file name is identical except for the extension (`tests/PROJ-0001_login.test.ts`).
 
 ## Step 5: Have the spec reviewed
 
@@ -98,6 +99,7 @@ Use the `generate-playwright-test-from-spec` skill.
 
 The generated test must:
 
+- carry the same file name as the spec, only the extension differs (`*.spec.md` → `*.test.ts`),
 - stay traceable to the spec,
 - contain concrete assertions,
 - work without `page.locator('body')`,

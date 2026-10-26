@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/spec-annotation';
 
-test.describe('PROJ-0003: Juice Shop Basket Management', () => {
+test.describe('Juice Shop Basket Management', () => {
   test('Add products, modify quantities, delete one item and verify total value @regression @desktop', async ({ page }) => {
     const uniqueEmail = `user_proj0003_${Date.now()}@example.com`;
 

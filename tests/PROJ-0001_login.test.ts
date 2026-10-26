@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/spec-annotation';
 
-test.describe('PROJ-0001: Juice Shop Login Test', () => {
+test.describe('Juice Shop Login Test', () => {
   test('Successful Login with a test user @regression @fast @desktop', async ({ page }) => {
     const testEmail = `user_proj0001_${Date.now()}@example.com`;
     const testPassword = 'SuperSafe123!';

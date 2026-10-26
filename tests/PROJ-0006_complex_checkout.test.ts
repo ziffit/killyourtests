@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/spec-annotation';
 
-test.describe('PROJ-0006: Juice Shop Complex Checkout Flow', () => {
+test.describe('Juice Shop Complex Checkout Flow', () => {
   test.setTimeout(120000);
 
   test.use({ viewport: { width: 480, height: 800 } });

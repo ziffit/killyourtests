@@ -12,6 +12,7 @@ Generate Playwright tests only from reviewed Markdown specs. The core principle:
 ## Preconditions
 
 - The spec review verdict is `APPROVED`.
+- The spec file name carries a confirmed ID (`<ID>_<slug>.spec.md`) and the `id` entry in its frontmatter.
 - `learnings.md` has been read.
 - The project test fixture, test directory, and verification command are known.
 
@@ -43,6 +44,8 @@ Forbidden rationalizations - if you notice one of these appearing while reasonin
 | Area | Rule |
 |------|------|
 | Source of truth | Preserve the spec behavior; do not invent extra behavior |
+| Output file | `tests/<spec basename>.test.ts` - identical to the spec file name, only the extension differs; never generate into a differently named or unnumbered file |
+| Describe title | Quote the spec heading verbatim, without the ID |
 | Fixture | Use the project-specific fixture if one exists |
 | Assertions | Add a step comment with the complete step text for every assertion block (see Step Comments) |
 | Step comments | Quote the full spec step text; never truncate, shorten, or paraphrase it |

@@ -7,7 +7,7 @@ This file defines the binding project rules for AI agents and humans working on 
 MarkupPlayRight generates Playwright tests from human-readable Markdown specifications.
 
 - `specs/*.spec.md` is the business source of truth.
-- `tests/*.spec.ts` is generated Playwright code and stays traceable to the spec.
+- `tests/*.test.ts` is generated Playwright code and stays traceable to the spec.
 - `learnings.md` collects app-specific patterns, selectors, and pitfalls.
 - Learning entries are always general: no references to concrete specs or tests (IDs, file names, or test names).
 - `playbook/` contains the reusable core for other projects.
@@ -24,6 +24,26 @@ Specs are written like navigation instructions for human testers.
 - Verifications state the concrete expectation: what is visible and where.
 - Test data must be explicit; no placeholders such as "valid address".
 - Every spec needs at least one viewport tag: `desktop` or `mobile`.
+
+## Spec ID and file naming
+
+Every spec owns exactly one unique ID. The ID lives in the YAML frontmatter and in the file name; the heading carries only the title.
+
+```markdown
+---
+id: PROJ-0001
+tags: [regression, fast, desktop]
+---
+
+# Juice Shop Login Test
+```
+
+- File names: `specs/<ID>_<slug>.spec.md` and `tests/<ID>_<slug>.test.ts`.
+- Spec and test file name are identical except for the extension.
+- Exactly one test file per spec. A spec without a test and a test without a spec are both invalid.
+- The `test.describe` title quotes the spec heading verbatim, without the ID.
+- IDs are assigned manually: no auto-increment, no counter script, no guessing. If the request names no ID, ask for it. If the existing schema is recognizable (e.g. `PROJ-0001`), propose the next free ID and wait for confirmation. A proposal is not an assignment - create or rename the file only after confirmation.
+- The ID never appears in the spec heading.
 
 ## Spec creation in the browser (mandatory)
 
@@ -98,7 +118,7 @@ Without a clear spec, no test is generated.
 Generated tests are always run in the visible (headed) browser. `slowMo` is used only for the final run so the user can follow it live; development runs go without it.
 
 - Final run: `npm run test:demo` (sets `SLOW_MO=250` and `--headed`).
-- Development run, visible: `npx playwright test tests/<file>.spec.ts --headed`.
+- Development run, visible: `npx playwright test tests/<file>.test.ts --headed`.
 - Locator/action timeout is 8000ms (`playwright.config.ts`) so development failures surface fast. 1.5–3s breaks existing tests: after closing both banners the overlay blocks clicks for ~5s.
 - Do not run headless while the user is watching.
 - On failure, repeat the run visibly and evaluate the trace, screenshot, and error message.

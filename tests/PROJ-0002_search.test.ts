@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/spec-annotation';
 
-test.describe('PROJ-0002: Juice Shop Product Search Test', () => {
+test.describe('Juice Shop Product Search Test', () => {
   const doSearch = async (page: import('@playwright/test').Page, term: string) => {
     await page.locator('.mat-search_icon-search').click();
     await page.getByRole('textbox').fill(term);

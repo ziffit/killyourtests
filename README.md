@@ -7,11 +7,11 @@ Tests werden als menschenlesbare Markdown-Dateien beschrieben (`specs/`) und von
 ## Konzept
 
 ```
-Spec (Spec.md) → KI-Review → KI generiert Test (spec.ts) → Ausführung → ggf. Spec verfeinern
+Spec (Spec.md) → KI-Review → KI generiert Test (test.ts) → Ausführung → ggf. Spec verfeinern
 ```
 
-- **Spezifikationen** in `specs/*.spec.md`: imperativ, fachlich, ohne technische Selektoren
-- **Generierte Tests** in `tests/*.spec.ts`: Playwright TypeScript, mit Rückverfolgung zur Spec
+- **Spezifikationen** in `specs/*.spec.md`: imperativ, fachlich, ohne technische Selektoren; ID im Frontmatter und im Dateinamen
+- **Generierte Tests** in `tests/*.test.ts`: Playwright TypeScript, gleicher Dateiname wie die Spec (nur andere Endung), mit Rückverfolgung zur Spec
 - **Agent-Instructions** (`AGENTS.md`): Regeln und Prozesse für KI-Agenten und Menschen
 - **Learnings** (`learnings.md`): lebendes Dokument mit gesammelten Patterns und Fallstricken
 - **Playbook** (`playbook/`): wiederverwendbarer Kern zur Übernahme in andere Projekte
@@ -55,7 +55,7 @@ Wichtig bei größerer Nutzergruppe: Jeder `npm test`-Lauf startet per `global-s
 
 ## Workflow für neue Tests
 
-1. Spec in `specs/` anlegen (siehe vorhandene Specs als Vorlage)
+1. Spec in `specs/` anlegen (siehe vorhandene Specs als Vorlage): ID vergeben, dann `<ID>_<slug>.spec.md`
 2. Spec vom KI-Agenten reviewen lassen
 3. Test generieren und ausführen lassen
 4. Bei Fehlern: Spec verfeinern, nicht den Test debuggen

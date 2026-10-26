@@ -15,6 +15,7 @@ Read `learnings.md`, then inspect the target spec. If the input is natural langu
 
 | Check | Required outcome |
 |-------|------------------|
+| Spec ID and file name | `id` present in the frontmatter, unique, matching the file-name prefix and absent from the heading; the paired test file name is identical except for the extension |
 | Imperative style | Steps read like user instructions |
 | No technical selectors | No CSS classes, IDs, `aria-label`, XPath, or implementation-only names |
 | Step granularity | One logical user action or one verification per line |

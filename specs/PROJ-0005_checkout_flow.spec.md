@@ -1,8 +1,9 @@
 ---
+id: PROJ-0005
 tags: [regression, desktop]
 ---
 
-# PROJ-0005: Juice Shop Checkout Flow
+# Juice Shop Checkout Flow
 
 ## Scenario: Complete a full checkout flow from basket to order confirmation
 

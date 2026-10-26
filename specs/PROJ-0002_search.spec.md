@@ -1,8 +1,9 @@
 ---
+id: PROJ-0002
 tags: [regression, fast, desktop]
 ---
 
-# PROJ-0002: Juice Shop Product Search Test
+# Juice Shop Product Search Test
 
 ## Testdaten
 

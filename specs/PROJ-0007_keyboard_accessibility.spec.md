@@ -1,8 +1,9 @@
 ---
+id: PROJ-0007
 tags: [accessibility, regression, desktop]
 ---
 
-# PROJ-0007: Juice Shop Keyboard-Only Accessibility
+# Juice Shop Keyboard-Only Accessibility
 
 ## Scenario: Complete checkout flow using only keyboard navigation
 

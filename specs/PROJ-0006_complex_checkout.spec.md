@@ -1,8 +1,9 @@
 ---
+id: PROJ-0006
 tags: [regression, mobile]
 ---
 
-# PROJ-0006: Juice Shop Complex Checkout Flow
+# Juice Shop Complex Checkout Flow
 
 ## Testdaten
 - Verwende einen zufällig generierten Stadtnamen, bestehend aus je einem zufälligen Eintrag aus den folgenden Kategorien:

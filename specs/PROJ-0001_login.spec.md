@@ -1,8 +1,9 @@
 ---
+id: PROJ-0001
 tags: [regression, fast, desktop]
 ---
 
-# PROJ-0001: Juice Shop Login Test
+# Juice Shop Login Test
 
 ## Scenario: Successful Login with a test user
 

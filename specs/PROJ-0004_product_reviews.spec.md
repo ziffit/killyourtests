@@ -1,8 +1,9 @@
 ---
+id: PROJ-0004
 tags: [regression, desktop]
 ---
 
-# PROJ-0004: Juice Shop Product Reviews
+# Juice Shop Product Reviews
 
 ## Scenario: Add a new review to a product and verify it is visible
 

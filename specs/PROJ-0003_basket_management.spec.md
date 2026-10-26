@@ -1,8 +1,9 @@
 ---
+id: PROJ-0003
 tags: [regression, desktop]
 ---
 
-# PROJ-0003: Juice Shop Basket Management
+# Juice Shop Basket Management
 
 ## Scenario: Add products, modify quantities, delete one item and verify total value
 

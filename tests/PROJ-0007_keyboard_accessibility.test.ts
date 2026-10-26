@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/spec-annotation';
 
-test.describe('PROJ-0007: Juice Shop Keyboard-Only Accessibility', () => {
+test.describe('Juice Shop Keyboard-Only Accessibility', () => {
   test.setTimeout(180000);
 
   test('Complete checkout flow using only keyboard navigation @accessibility @regression @desktop', async ({ page }) => {

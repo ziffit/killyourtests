@@ -1,8 +1,9 @@
 ---
+id: PROJ-0008
 tags: [regression, mobile]
 ---
 
-# PROJ-0008: Juice Shop Basket Negative Tests
+# Juice Shop Basket Negative Tests
 
 ## Scenario: Checkout with empty basket is not possible
 
